@@ -1,489 +1,629 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>POS 213 Computer-Based Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS 213 - CBT Practice Exam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #d97706;
+        }
 
-  <!-- Vercel Web Analytics Script Integration -->
-  <script defer src="/_vercel/insights/script.js"></script>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    body {
-      background-color: #f4f6f9;
-      color: #333;
-      padding-top: 70px;
-      padding-bottom: 40px;
-    }
+        /* Header */
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-    /* Fixed Header with Countdown Timer */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background-color: #1e293b;
-      color: #fff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-      z-index: 1000;
-    }
+        .logo-title h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
 
-    .header-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
+        .logo-title p {
+            font-size: 0.8rem;
+            color: #93c5fd;
+        }
 
-    .timer-container {
-      background-color: #0f172a;
-      padding: 6px 14px;
-      border-radius: 6px;
-      border: 1px solid #334155;
-      font-size: 1.1rem;
-      font-weight: bold;
-      letter-spacing: 1px;
-      color: #38bdf8;
-    }
+        .timer-badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    .timer-container.warning {
-      color: #ef4444;
-      animation: pulse 1s infinite;
-    }
+        /* Main Container Layout */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            flex: 1;
+            width: 100%;
+        }
 
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.5; }
-      100% { opacity: 1; }
-    }
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
 
-    .container {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 0 15px;
-    }
+        /* Question Box */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-    .card {
-      background: #fff;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
 
-    .question-title {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: #0f172a;
-    }
+        .q-number {
+            font-weight: 600;
+            color: var(--primary-light);
+            font-size: 1.1rem;
+        }
 
-    .options-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+        .q-text {
+            font-size: 1.15rem;
+            font-weight: 500;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
 
-    .option-label {
-      display: flex;
-      align-items: center;
-      padding: 10px 14px;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.2s, border-color 0.2s;
-    }
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
 
-    .option-label:hover {
-      background-color: #f8fafc;
-      border-color: #cbd5e1;
-    }
+        .option-btn {
+            background: #f8fafc;
+            border: 2px solid var(--border-color);
+            padding: 1rem 1.2rem;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
 
-    .option-label input[type="radio"] {
-      margin-right: 12px;
-      accent-color: #2563eb;
-    }
+        .option-btn:hover {
+            border-color: var(--primary-light);
+            background: #eff6ff;
+        }
 
-    .submit-btn {
-      width: 100%;
-      background-color: #2563eb;
-      color: white;
-      border: none;
-      padding: 14px;
-      font-size: 1rem;
-      font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
+        .option-btn.selected {
+            border-color: var(--primary-light);
+            background: #dbeafe;
+            font-weight: 600;
+            color: var(--primary);
+        }
 
-    .submit-btn:hover {
-      background-color: #1d4ed8;
-    }
+        .option-prefix {
+            background: #e2e8f0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
 
-    .results-card {
-      display: none;
-      background: #fff;
-      border-radius: 8px;
-      padding: 30px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
+        .option-btn.selected .option-prefix {
+            background: var(--primary-light);
+            color: white;
+        }
 
-    .results-card h2 {
-      margin-bottom: 15px;
-      color: #0f172a;
-    }
+        /* Action Buttons */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
 
-    .score-display {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: #2563eb;
-      margin-bottom: 10px;
-    }
-  </style>
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .btn-primary {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #15803d;
+        }
+
+        /* Sidebar Palette */
+        .sidebar {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            height: fit-content;
+        }
+
+        .sidebar h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .grid-nav {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 0.2rem;
+        }
+
+        .nav-btn {
+            aspect-ratio: 1;
+            border: 1px solid var(--border-color);
+            background: #f8fafc;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--primary-light);
+        }
+
+        .nav-btn.active {
+            border: 2px solid var(--primary-light);
+            color: var(--primary-light);
+        }
+
+        .nav-btn.answered {
+            background: var(--primary-light);
+            color: white;
+            border-color: var(--primary-light);
+        }
+
+        .legend {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-box {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+        }
+
+        /* Modal Results */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #eff6ff;
+            color: var(--primary-light);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 1.5rem auto;
+            border: 4px solid var(--primary-light);
+        }
+
+        .score-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        .score-total {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Review Mode Styling */
+        .review-mode .option-btn.correct {
+            background: #dcfce7 !important;
+            border-color: var(--success) !important;
+            color: #14532d !important;
+        }
+
+        .review-mode .option-btn.wrong {
+            background: #fee2e2 !important;
+            border-color: var(--danger) !important;
+            color: #7f1d1d !important;
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <div class="header-title">POS 213 Exam</div>
-    <div class="timer-container" id="timer">60:00</div>
-  </header>
+    <header>
+        <div class="logo-title">
+            <h1>POS 213 Practice Exam</h1>
+            <p>Computer Based Testing System</p>
+        </div>
+        <div class="timer-badge" id="timer">
+            ⏱️ <span id="timer-text">60:00</span>
+        </div>
+    </header>
 
-  <div class="container">
-    <form id="cbtForm">
-      <div id="questionsContainer"></div>
-      <button type="button" class="submit-btn" onclick="submitExam()">Submit Examination</button>
-    </form>
+    <div class="container">
+        <!-- Main Quiz Section -->
+        <main class="card" id="quiz-card">
+            <div>
+                <div class="q-header">
+                    <span class="q-number" id="q-number">Question 1 of 135</span>
+                    <span style="font-size:0.85rem; color:var(--text-muted);" id="q-status">Unanswered</span>
+                </div>
+                <div class="q-text" id="q-text">Loading question...</div>
+                <div class="options-grid" id="options-container">
+                    <!-- Options injected here -->
+                </div>
+            </div>
 
-    <div class="results-card" id="resultsCard">
-      <h2>Examination Completed</h2>
-      <p>Your Total Score:</p>
-      <div class="score-display" id="scoreDisplay">0 / 0</div>
-      <p id="percentageDisplay"></p>
+            <div class="controls">
+                <button class="btn btn-secondary" id="prev-btn" onclick="prevQuestion()">Previous</button>
+                <div>
+                    <button class="btn btn-secondary" id="clear-btn" onclick="clearAnswer()">Clear Answer</button>
+                </div>
+                <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Next</button>
+                <button class="btn btn-success" id="submit-btn" onclick="confirmSubmit()">Submit Exam</button>
+            </div>
+        </main>
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <h3>Question Palette</h3>
+            <div class="grid-nav" id="grid-nav">
+                <!-- Nav buttons injected here -->
+            </div>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-box" style="background: var(--primary-light);"></div>
+                    <span>Answered</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: #f8fafc; border: 1px solid var(--border-color);"></div>
+                    <span>Unanswered</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="border: 2px solid var(--primary-light);"></div>
+                    <span>Current Question</span>
+                </div>
+            </div>
+        </aside>
     </div>
-  </div>
 
-  <script>
-    const questionsData = [
-      { q: "Who among the following African leaders advocated Negritude", options: ["Julius Nyerere", "Leopold Senghor", "Kenneth Kaunda", "Nnamdi Azikwe"], answer: "Leopold Senghor" },
-      { q: "A good example of a Portuguese territory is", options: ["Benin Republic", "Togo", "Zimbabwe", "Kenya"], answer: "Zimbabwe" },
-      { q: "Colonialism was terminated in Southern African region through", options: ["Negotiation", "Wars of liberation", "Coup detat", "Constitutionalism"], answer: "Wars of liberation" },
-      { q: "The Wealth of Nations was written by", options: ["Lord Lugard", "David Moore", "David Richardo", "Adam Smith"], answer: "Adam Smith" },
-      { q: "Under slavocratic mode of production, politics became", options: ["Slave Governance", "Military democracies", "Exploitation Politics", "Slavocratic Politics"], answer: "Military democracies" },
-      { q: "Through the use of--------------, colonial authourities transformed political systems into modern one", options: ["Constitution", "Force", "Bargaining", "Conquest"], answer: "Constitution" },
-      { q: "Angola is a-------------- colony", options: ["Spanish", "Pourtuguese", "French", "British"], answer: "Pourtuguese" },
-      { q: "Another name for treaty is", options: ["Agreement", "Punishment", "Sacrifice", "Obedience"], answer: "Agreement" },
-      { q: "Imperialism and Social Classes is associated with", options: ["Joseph Schumpeter", "V.I. Lenin", "Rosa Luxemborg", "Karl Marx"], answer: "Joseph Schumpeter" },
-      { q: "The major aim of imperialism in Nigeria is", options: ["Domination", "Military", "Economy", "Service"], answer: "Domination" },
-      { q: "The study of history of a nation and its people is known as", options: ["Political Sociology", "Political Studies", "Political Anthropology", "Political History"], answer: "Political Anthropology" },
-      { q: "Congo was dominated before independence by", options: ["Germany", "France", "Belgium", "Britain"], answer: "Belgium" },
-      { q: "The reduction of political problems to technical problems is referred to as", options: ["Artificial Politics", "Depoliticization", "Foreign Politics", "Depolarization"], answer: "Depoliticization" },
-      { q: "Colonialism is usually achieved through", options: ["Political action", "Military action", "Economic action", "Diplomatic action"], answer: "Military action" },
-      { q: "Which of the following countries colonized Angola", options: ["Belgium", "Britain", "France", "Portugal"], answer: "Portugal" },
-      { q: "Lugardism is associated with indirect rule in", options: ["Togo", "Sierra Leone", "Nigeria", "Ghana"], answer: "Nigeria" },
-      { q: "Prepeh, king of Ashantis can be found in", options: ["Ghana", "Liberia", "South Africa", "Namibia"], answer: "Ghana" },
-      { q: "The first constitution in Nigeria is", options: ["Richards Constitution", "Macpherson Constitution", "Clifford Constitution", "Lugard Constitution"], answer: "Clifford Constitution" },
-      { q: "Assimiladoes as a colonial policy is practised by", options: ["Spain", "Britain", "France", "Portugal"], answer: "Portugal" },
-      { q: "Africans began meaningful existence as Homo Sapiens with their colonization by", options: ["Europe", "Latin America", "Arabs", "Caribean"], answer: "Europe" },
-      { q: "Under communal mode of production, authority was vested in the", options: ["Youths", "Chiefs", "Religious Elders", "Elders"], answer: "Elders" },
-      { q: "African polity and political society are……………….unit", options: ["Heterogenous", "Homogenous", "Diversified", "Unified"], answer: "Homogenous" },
-      { q: "The penetrated African society largely depended on the", options: ["External prime-mover", "Internal prime-mover", "External Bourgeoisie", "Internal Bourgeoisie"], answer: "External prime-mover" },
-      { q: "The prohibition of indigenous technology for the production of arms and ammunition by the colonialists is for……………….. reason", options: ["Industrial", "Economic", "Military", "Technological"], answer: "Military" },
-      { q: "Politics in Africa today has its origin in", options: ["Indigenous imperialism", "Traditional Politics", "Western Imperialism", "African Culture"], answer: "Western Imperialism" },
-      { q: "Which of the following African nationalists ruled Tanzania after independence ?", options: ["Leopold Senghor", "Emperor Bokassa", "Sekou Toure", "Julius Nyerere"], answer: "Julius Nyerere" },
-      { q: "Which of the following Africans in Diaspora articulated penetration thesis?", options: ["Samuel Johnson", "George Padmore", "Herbert Macaulay", "Kwame Nkerumah"], answer: "George Padmore" },
-      { q: "The following African scholars condemned imperialism except", options: ["Fidel Castro", "Samir Amin", "Franz Fanon", "Walter Rodney"], answer: "Fidel Castro" },
-      { q: "In its broadest sense imperialism means the political organization called", options: ["subordination", "Empire", "Injustice", "Metropolitan"], answer: "Empire" },
-      { q: "The book A Political Economy of Africa is written by", options: ["Peter Ekeh", "Claude Ake", "Walter Rodney", "Bade Onimode"], answer: "Claude Ake" },
-      { q: "A good example of a politician and stateman who is a British imperialist is", options: ["Richeleu", "Lord Salisbury", "Bernard Shaw", "Lord Lugard"], answer: "Lord Salisbury" },
-      { q: "Zululand is located in", options: ["South Africa", "Mozambique", "Namibia", "Angola"], answer: "South Africa" },
-      { q: "Who among the following sees the root of white racism not in the colour of the skin but in the Whiteman’s claim of superior culture?", options: ["Marcus Garvey", "Samir Amin", "Kwame Nkrumah", "Walter Rodney"], answer: "Marcus Garvey" },
-      { q: "Sociological explanation of imperialism is credited to", options: ["John Hobson", "Joseph Schumpeter", "Barrington More", "Karl Marx"], answer: "Joseph Schumpeter" },
-      { q: "Johan Galtung is a ………… Social Scientist", options: ["Norwegian", "British", "French", "German"], answer: "Norwegian" },
-      { q: "A good example of processed good is", options: ["Cocoa beans", "Fertilizer", "Banana", "Diamond"], answer: "Fertilizer" },
-      { q: "There are …………… types of effects of unequal change between the centre and the periphery as identified by Johan Galtung", options: ["Two", "Four", "Three", "Five"], answer: "Two" },
-      { q: "Madagascar as an Island is located in", options: ["Europe", "Latin-America", "Caribbean", "Africa"], answer: "Africa" },
-      { q: "A good example of Francophone country in West Africa is", options: ["Gabon", "Siera-Leone", "Togo", "Angola"], answer: "Togo" },
-      { q: "Politics according to Vernon Van Dyke involves the struggle among actors pursuing conflicting desires on __________", options: ["Policy issues", "Political issues", "Public issues", "People’s issues"], answer: "Public issues" },
-      { q: "By Africa in the context of POS 213, we mean the whole geographical area encompassing __________", options: ["Diaspora Africans", "Continental African States", "African States before independent", "African States after independent"], answer: "Continental African States" },
-      { q: "Europe dominated African politics for almost __________ years before independent", options: ["300", "400", "500", "250"], answer: "500" },
-      { q: "The Old Kingdom of Kongo was divided into ____________", options: ["Congo and Angola", "Congo and Togo", "Angola and Togo", "Congo and Gaben"], answer: "Congo and Angola" },
-      { q: "___________ describes the creation of African States as an artificial boundaries", options: ["Julius Nyerere", "Claude Ake", "George Balandiers", "George Padmore"], answer: "George Balandiers" },
-      { q: "Before independent, Angola was held as an overseas province of", options: ["Portugal", "Belgium", "France", "Britain"], answer: "Portugal" },
-      { q: "In the colonial era, the reduction of every political problem in to technical one is referred to as _____________", options: ["Underpoliticization", "Overpoliticization", "Depoliticization", "Propoliticization"], answer: "Depoliticization" },
-      { q: "The weakening of the economic position of traditional rulers in the colonial era resulted in limiting their ___________", options: ["Prestige", "Status", "Power", "Position"], answer: "Power" },
-      { q: "Where local chiefs were not in existence, ________________ were created to serve the interest of colonial masters", options: ["Master servant", "Warrant chiefs", "Lower chiefs", "Uneducated chiefs"], answer: "Warrant chiefs" },
-      { q: "One of the reasons why we study politics in Africa is to", options: ["Govern ourselves", "Understand African politics", "Acquaint ourselves with Europe", "Acquaint ourselves with the peculiarities of how it is conducted"], answer: "Acquaint ourselves with the peculiarities of how it is conducted" },
-      { q: "In order to proffer his own solution on how to govern Africa, the colonizer reduced all political problems to ___________", options: ["Mechanical problems", "Economic problems", "Technical problems", "Social problems"], answer: "Technical problems" },
-      { q: "By declaration of political structure, symbol or process as illegal by the colonizer is meant ____________", options: ["Illegality", "Prohibition", "Banning", "Suspension"], answer: "Prohibition" },
-      { q: "A document signed with British agents by African traditional rulers on their journey of colonial expedition is called _________", options: ["Law", "Agreement", "Ideology", "Treaty"], answer: "Treaty" },
-      { q: "Which of the following African kings resisted colonial rule", options: ["King David Eyor", "King Jaja of Opobo", "King Ashanike", "King Okpuhor Tobah"], answer: "King Jaja of Opobo" },
-      { q: "Through the use of __________, colonial authorities transformed indigenous political systems into adapted forms of western models", options: ["Treaties", "Laws", "Constitutions", "Force"], answer: "Constitutions" },
-      { q: "The Clifford Constitution began in", options: ["1922", "1920", "1925", "1923"], answer: "1922" },
-      { q: "Zimbabwe was formally known as ____________", options: ["Zimba Island", "Rhodesia", "Harare", "Zimba Region"], answer: "Rhodesia" },
-      { q: "A small minority of Africans integrated into mainstream Portuguese politics are called _________", options: ["Evolue", "Assimilados", "Minority Portuguese", "Black Portuguese"], answer: "Assimilados" },
-      { q: "The most colourful British Colonial administrator was", options: ["Lord Campbell", "Lord Lugard", "Lord Robertson", "Lord Carrington"], answer: "Lord Lugard" },
-      { q: "African nationalists had to fight Portuguese colonialism because", options: ["It has no intention to hand over power to Africans", "It seized their farmlands", "It imposed too much tax", "It makes Africans to be poor"], answer: "It has no intention to hand over power to Africans" },
-      { q: "The art of managing the resources of a people and of its government is referred to as ___________", options: ["Resource management", "Political economy", "Economic management", "Socio-economic management"], answer: "Political economy" },
-      { q: "The dependence on old colonial masters in many forms defined African political region today as a region of weak economies and ________", options: ["Unstable politics", "Unstable government", "Unstable regimes", "Unstable continent"], answer: "Unstable politics" },
-      { q: "In African political societies, pre-colonial political economy was, in productive activities, essentially", options: ["Primitive", "Agrarian", "Pastoral", "Industrial"], answer: "Pastoral" },
-      { q: "In terms of social production within the context of traditional African societies, the ___________ was the basic unit", options: ["Clan", "Village", "Family", "Father"], answer: "Family" },
-      { q: "The communal mode of production in pre-colonial African societies paid much attention on", options: ["Food ownership", "Land ownership", "Farm ownership", "Animal ownership"], answer: "Land ownership" },
-      { q: "When a mode of production is based on slave labour, it is known as ___________", options: ["Slabocratic", "Slavocratic", "Labourstatic", "Slavobratic"], answer: "Slavocratic" },
-      { q: "The two main actors under feudal mode of production are __________", options: ["Slave and Master", "Servant and Master", "Fief and Serf", "Slave and Landowner"], answer: "Fief and Serf" },
-      { q: "Pre-colonial political economy of Africa paid particular intention to _______", options: ["Power", "Culture", "Tradition", "Authority"], answer: "Culture" },
-      { q: "Under slave mode of production, _________ served as political advisers", options: ["Warlords", "Elders", "Religious leaders", "Chiefs"], answer: "Elders" },
-      { q: "In the pre-colonial political economy of African states laziness was visited with", options: ["Communal fines", "Social sanctions", "Expulsion from village", "Hard labour"], answer: "Social sanctions" },
-      { q: "The pattern of exchange among the pre-colonial African societies was dictated by ________", options: ["Opportunity", "real needs", "Cultural values", "Traditional values"], answer: "real needs" },
-      { q: "Penetration thesis holds that the colonial situation represented a", options: ["Transformation of Africa", "Division of Africa", "Maldevelopment of Africa", "Rearrangement of Africa"], answer: "Maldevelopment of Africa" },
-      { q: "One of the reasons why indigenous technology was killed is to eliminate possible", options: ["Development", "Attraction", "Underdevelopment", "Competition"], answer: "Competition" },
-      { q: "Who among the following scholars condemn imperialism for Africa’s Predicament?", options: ["Leopold Senghor", "Samir Amin", "Chinua Achebe", "George Padmore"], answer: "Samir Amin" },
-      { q: "How Europe underdeveloped Africa was written by", options: ["Walter Rodney", "Kwame Nkrumah", "Nelson Mandela", "Franz Fanon"], answer: "Walter Rodney" },
-      { q: "The exportation of capital by the colonizer into the colony was in form of", options: ["Accumulation", "Administration", "Investment", "Exploitation"], answer: "Investment" },
-      { q: "Exchange of goods and services in the pre-colonial African societies across borders was", options: ["Unequal", "Symmetric", "Asymetric", "Exploitative"], answer: "Symmetric" },
-      { q: "Imperialism means the political organization which is called _________", options: ["Colonialism", "Authoritarianism", "Empire", "Exploitation"], answer: "Empire" },
-      { q: "Imperialism according to Hans Morgenthau is __________", options: ["Force to dominate", "power to dominate", "Authority to dominate", "Influence to dominate"], answer: "power to dominate" },
-      { q: "Under which form of imperialism did western capitalism penetration take place in Africa", options: ["Economic", "Military", "Cultural", "Political"], answer: "Political" },
-      { q: "The first economic theory of imperialism was articulated by", options: ["Johan Galtung", "Joseph Schumpeter", "John Hobson", "V.I. Lenin"], answer: "John Hobson" },
-      { q: "The two mechanism identified by Hobson for achieving imperialist objectives are", options: ["Economic sanction and militarism", "Merchantilism and militarism", "Arms manufacturing and politics", "Force and sanctions"], answer: "Merchantilism and militarism" },
-      { q: "Hobson sees imperialism as the consequence of _________ in the capitalist mode of production", options: ["Poverty", "Exploitation", "Maladjustment", "Power"], answer: "Maladjustment" },
-      { q: "Which of the following countries served as a reference point in Hobson’s analysis?", options: ["Canada", "Britain", "USA", "Germany"], answer: "Britain" },
-      { q: "According to Hobson, the use of _________ will eliminate material inequalities among social classes", options: ["Sanction", "Taxation", "Power", "Force"], answer: "Taxation" },
-      { q: "The rise of imperialism according to Hobson can be prevented through relevant", options: ["Private policies", "Financial regulation", "Public policies", "Poverty reduction"], answer: "Public policies" },
-      { q: "Hobson’s book Imperialism: A Study was published in", options: ["1903", "1902", "1904", "1906"], answer: "1902" },
-      { q: "For rejecting both class struggle and Marx’s labour theory of value, Hobson’s work was regarded as", options: ["Conservative theory of imperialism", "Liberal theory of imperialism", "Quasi capitalist theory of imperialism", "Class – labour theory of imperialism"], answer: "Liberal theory of imperialism" },
-      { q: "The concept of finance – capital was developed by", options: ["Hilferding", "Marx", "V.I. Lenin", "Luxembourg"], answer: "Hilferding" },
-      { q: "According to V.I. Lenin imperialism is the highest stage of", options: ["Colonialism", "Underdevelopment", "Capitalism", "Exploitation"], answer: "Capitalism" },
-      { q: "V.I. Lenin’s book was written in", options: ["Germany", "Russia", "Britain", "Zurich"], answer: "Zurich" },
-      { q: "How many features did Lenin identified which define imperialism", options: ["Four", "Five", "Six", "Eight"], answer: "Five" },
-      { q: "The main body of Lenin’s theory is purely economic, but there is a minor ________ aspect of the theory", options: ["Social", "Historical", "Cultural", "Religious"], answer: "Historical" },
-      { q: "According to Lenin, surplus capital would be exported to backward countries where they will attract", options: ["High interest rate", "Direct investment", "More professionals", "Economic values"], answer: "High interest rate" },
-      { q: "For Lenin, exportation of capital can be distinguished from", options: ["Industrial exportation", "Commodity exportation", "Monopoly exportation", "financial exportation"], answer: "Commodity exportation" },
-      { q: "In Lenin’s work a merger of bank capital with industrial capital will lead to", options: ["Industrial bank", "International capitalist", "Financial oligarchy", "Financial capitalist"], answer: "Financial oligarchy" },
-      { q: "__________ according to Lenin is a pre-condition for imperialism", options: ["Commodity", "Capitalism", "Domination", "Cartelization"], answer: "Cartelization" },
-      { q: "Lenin’s theory is an economic theory because", options: ["His explanation is essentially economic", "The theory relates consumption to imperialism", "His theory mention capitalism in the theory", "The theory made mention of production"], answer: "His explanation is essentially economic" },
-      { q: "According to Hobson the growth of the powers of production exceeds the growth in", options: ["Distribution", "Consumption", "Development", "Investment"], answer: "Consumption" },
-      { q: "Imperialism can said to be a product of the forces of finance capitalism, industrial revolution and-----------------", options: ["Colonialism", "Nationalism", "Expedition", "Adventurism"], answer: "Nationalism" },
-      { q: "Schumpeter’s explanation of imperialism is _________ in nature", options: ["Political", "Economical", "Sociological", "Cultural"], answer: "Sociological" },
-      { q: "According to Schumpeter, ____________ is antithetical to imperialism", options: ["Socialism", "Capitalism", "Democracy", "Power"], answer: "Capitalism" },
-      { q: "The Devil’s theory of imperialism was propounded by", options: ["Nye Committee", "Nixon Committee", "McCarthy Committee", "Kissinger Committee"], answer: "Nye Committee" },
-      { q: "According to the Devil’s theory the class of people who benefited from war were the ammunition makers, financial barons and", options: ["International bankers in Wall Street", "Financial oligarchies", "Manufacturers", "Merchants"], answer: "International bankers in Wall Street" },
-      { q: "The Devil’s theory attempts to explain imperialism as a conspiracy of the", options: ["Capitalist class", "Entrepreneur class", "Economic class", "Financial class"], answer: "Capitalist class" },
-      { q: "The Devil’s theory was propounded to explain the effects of arms on the", options: ["Second World War", "First World War", "The Gulf War", "The Auckland War"], answer: "First World War" },
-      { q: "Military Industrial Complex is associated with", options: ["Soviet Union", "United States of America", "China", "Great Britain"], answer: "United States of America" },
-      { q: "According to the Devil’s theory __________ is identified as the mechanism for achieving imperialist ends", options: ["Power", "Prestige", "Force", "War"], answer: "War" },
-      { q: "The structural theory of imperialism identified _________ nations", options: ["Two", "Three", "Four", "Six"], answer: "Two" },
-      { q: "A nation with primary goods and low capital stock is known as", options: ["Centre nation", "Periphery nation", "Primary nation", "Secondary nation"], answer: "Periphery nation" },
-      { q: "The effects of unequal exchange that manifest within the domestic environment is referred to as", options: ["Inter-actor effect", "Intra-actor effect", "Vertical interaction effect", "Horizontal interaction effect"], answer: "Intra-actor effect" },
-      { q: "The author of structural theory of imperialism is", options: ["John Hobson", "Joseph Schumpeter", "Johan Galtung", "V.I. Lenin"], answer: "Johan Galtung" },
-      { q: "How many mechanisms did the author of structural imperialism identified for bringing about imperialistic relations?", options: ["Three", "Two", "Four", "Five"], answer: "Two" },
-      { q: "________constitute the major source of inequality among nations", options: ["Vertical interaction", "Feudal interaction", "Horizontal interaction", "Vertical and Feudal interaction"], answer: "Vertical interaction" },
-      { q: "The author of structural theory of imperialism is a _________ social scientist", options: ["British", "German", "French", "Norwegian"], answer: "Norwegian" },
-      { q: "A politician and statesman in Britain of an imperialist posture is", options: ["Bismark", "Richelu", "Chamberlain", "Eisen-Kansler"], answer: "Chamberlain" },
-      { q: "Renascent Africa is a work credited to", options: ["Kwame Nkrumah", "NnamdiAzikwe", "Leopold Senghor", "Julius Nyerere"], answer: "NnamdiAzikwe" },
-      { q: "Who among the following argued that colonialism is the vehicle for the dispersal of civilization across the world", options: ["Griffiths", "McKinley", "Moon", "Emerson"], answer: "Griffiths" },
-      { q: "The term “dual mandate” was coined by", options: ["Lord Carrington", "Lord Spenier", "Lord Lugard", "Lord Salisbury"], answer: "Lord Lugard" },
-      { q: "The doctrine of power in relation to imperialism also means", options: ["The doctrine of force", "The doctrine of domination", "The doctrine of exploitation", "The doctrine of civilization."], answer: "The doctrine of exploitation" },
-      { q: "How many sources of peculiarities are identified in African politics?", options: ["4", "2", "3", "5"], answer: "2" },
-      { q: "African traditional political system was transformed into", options: ["Western system", "Indigenous system", "Mixed system", "Industrial system"], answer: "Western system" },
-      { q: "The management of the resources of a people is known as", options: ["Economic relations", "Social development", "Economic process", "Political economy"], answer: "Political economy" },
-      { q: "Clans in the traditional political system built up", options: ["Land economy", "Social economy", "Traditional economy", "Cultural economy"], answer: "Traditional economy" },
-      { q: "Another name for warlords in the slavery period of production is", options: ["Captives", "Predators", "Capturer", "Modular"], answer: "Predators" },
-      { q: "The two basic concepts for the understanding of imperialism are", options: ["Money and Power", "Military and Economy", "Power and domination", "Power and Prestige"], answer: "Power and domination" },
-      { q: "Imperialism was a product of", options: ["Capitalism", "Socialism", "Communism", "Democracy"], answer: "Capitalism" },
-      { q: "Who among the following is a liberal theorist", options: ["Karl Marx", "John Hobson", "Johan Galtung", "Joseph Sahumpeter"], answer: "John Hobson" },
-      { q: "The central idea of Hobson theory is that imperialism is a social malaise brought about", options: ["Maladjustment in production", "Reckless spending", "Poverty", "Corruption"], answer: "Maladjustment in production" },
-      { q: "The basic tenets of Marxist theory of imperialism is", options: ["Power relations", "Economic analysis", "Poverty", "Class struggle"], answer: "Class struggle" },
-      { q: "Both Hobson and Lenin’s theory of imperialism are", options: ["Economic in nature", "Political in nature", "Social in nature", "Cultural in nature"], answer: "Economic in nature" },
-      { q: "Johan Galtung tried to explain imperialism between", options: ["Three nations", "Two nations", "Four nations", "Six nations"], answer: "Two nations" },
-      { q: "The centre nations in Galtung analysis are the", options: ["Industrialized nations", "Agrarian nations", "Imperial nations", "Christian nations"], answer: "Industrialized nations" },
-      { q: "The effect on language is attributed to", options: ["Economic imperialism", "Cultural imperialism", "Political imperialism", "Military imperialism"], answer: "Cultural imperialism" },
-      { q: "The advantages that are accrue to the industrial nations is known as", options: ["Spin off effect", "Spill over effect", "Unequal relations", "Unequal exchange"], answer: "Spin off effect" },
-      { q: "The feudal relationship as propounded by Galtung involve how many principles?", options: ["Six", "Two", "Three", "Four"], answer: "Four" },
-      { q: "One of the consequences of European penetration into indigenous African political system is", options: ["Poverty", "Underdevelopment", "Illiteracy", "Exploitation"], answer: "Underdevelopment" },
-      { q: "According to Hobson, imperialism can be eliminated through", options: ["Prayer", "Constitutionalism", "Enforcement of taxation", "Sanctions"], answer: "Enforcement of taxation" },
-      { q: "Labour theory of value is credited to the", options: ["Liberals", "Anarchist", "Marxist", "Revolutionaries"], answer: "Marxist" },
-      { q: "The Devil’s theory is associated with", options: ["The USA", "Britain", "China", "Germany"], answer: "The USA" },
-      { q: "The doctrines of imperialism are ----------------- in nature", options: ["Rational", "Subjective", "Objective", "Validating"], answer: "Subjective" },
-      { q: "The views of the doctrines of imperialism were sold to the world as explanations for imperialism in ------------------", options: ["Europe, North America and Sudan", "America, Asia and Africa", "Africa, Asia and Latin America", "South Africa, Asia and Asia Minor"], answer: "Africa, Asia and Latin America" },
-      { q: "European expansionism and imperialist adventure in Africa, Asia and Latin America was between ----------", options: ["1850s and the second half of 19th century", "19th century and 20th century", "1960s and 1980s", "1870s to first half of 20th century"], answer: "1850s and the second half of 19th century" },
-      { q: "How many groups of people were involved in canvassing for the doctrines of imperialism", options: ["4", "3", "5", "7"], answer: "4" },
-      { q: "The doctrines of imperialism implies", options: ["Theoretical opinions canvassed by the advocates of imperialism to avoid moral condemnation at home and abroad.", "The scientific postulation of imperialism", "The means of acquiring territories in Africa", "The regaining of lost territory to colonial adventure"], answer: "Theoretical opinions canvassed by the advocates of imperialism to avoid moral condemnation at home and abroad." },
-      { q: "--------------- explains imperialism as the logical outcrop of power disparity between two interacting nations or peoples", options: ["Doctrine of irredentism", "Doctrine of marginalization", "Doctrine of power", "Doctrine of exploitation"], answer: "Doctrine of power" },
-      { q: "Who argued that “imperialism is a multifarious response to a common opportunity that consists simply in disparity of power", options: ["Luthy Collinder", "Abraham Kaplan", "Athol Fugard", "Daniel Landes"], answer: "Daniel Landes" },
-      { q: "Renascent Africa was written by a ------------------------", options: ["Ghanian", "Nigerian", "Togolese", "Senegalese"], answer: "Nigerian" },
-      { q: "The resistance led by African rulers or traditional war-lords is called ------", options: ["Necessary resistance", "Primary resistance", "Antagonistic moves", "Insubordinate resistance"], answer: "Primary resistance" },
-      { q: "Imperialism is also explained in terms of -------------------", options: ["Objective mission", "Modernisation", "Civilising mission", "Dependency mission"], answer: "Civilising mission" },
-      { q: "The term dual mandate was coined by ---------------", options: ["P.T. Moon", "Rupert Emerson", "Lord Lugard", "W. Mckinley’s"], answer: "Lord Lugard" },
-      { q: "The league of nations mandate system reflected the ------------ in the doctrine of civilisation", options: ["Racism", "Nazism", "Euro centrism", "Obsession"], answer: "Racism" },
-      { q: "Paris peace treaty was concluded on the basis of president Wilson’s ---------- point programme", options: ["14", "16", "17", "20"], answer: "14" },
-      { q: "The territories in the German and Ottoman Turkish empires were categorised into classes", options: ["F, K, J", "A, B, C", "D,C, E", "1, 2, 3"], answer: "A, B, C" },
-      { q: "Marcus Garvey sees the root of white racism not in the colour of the skin but in the whiteman’s claim of -----------", options: ["Power", "Superiority", "Knowledge", "Superior culture"], answer: "Superior culture" },
-      { q: "The Economics of Imperialism was written by ------", options: ["Barratts Brown", "Claude Ake", "Hamza Alavi", "Marcus Garvey"], answer: "Barratts Brown" },
-      { q: "The argument by Hans Morgenthau that imperialism is about power; power to dominate was in which book?", options: ["Economics of Imperialism", "Politics among Nations", "Renascent Africa", "Gains of Imperialism"], answer: "Politics among Nations" },
-      { q: "The most popular form of imperialism in Africa is ---------------", options: ["Economics", "Culture", "Colonialism", "Political"], answer: "Colonialism" },
-      { q: "Penetration thesis traces the root of African political, economic and social situation to -----------", options: ["Western Capitalist Penetration", "Asian Capitalist Penetration", "African Sino Asian Alliances", "American Capitalist Penetration"], answer: "Western Capitalist Penetration" },
-      { q: "The first groups of people to articulate the penetration thesis were the ----------------", options: ["Nationalists", "Pan – Africanists", "Europeans", "Westernised early African Nationalists"], answer: "Westernised early African Nationalists" },
-      { q: "Which of the following is not a notable African scholar", options: ["Samir Amin", "Franz Fanon", "Ted Gur", "Walter Rodney"], answer: "Ted Gur" },
-      { q: "Which of the following is not among the early African nationalists", options: ["W.E.B Dubios", "Modibo Keita", "Sekou Toure", "Jomo Kenyatta"], answer: "W.E.B Dubios" },
-      { q: "One of the following is not an example of Africans in Diaspora", options: ["W.E.B Dubios", "C.R. James", "Walter Rodney", "George Padmore"], answer: "Walter Rodney" },
-      { q: "Who opined that through illiberal colonialism, the poor should be ruthlessly abolished by raising their standard of life while the rich was preserved.", options: ["P.T. Moon", "Lord Salisbury", "Bismark", "Bernard Shaw"], answer: "Bernard Shaw" },
-      { q: "The film, ------------------ documents the amount of blood of resisting Zulus that Britain had to let before she could take over Zululand.", options: ["Zululand", "The Zulu", "The Master Game", "The Great Fight"], answer: "The Zulu" },
-      { q: "Who wrote Imperialism and World Politics in 1927?", options: ["Bernard Shaw", "Lord Lugard", "Walter Rodney", "P.T. Moon"], answer: "P.T. Moon" },
-      { q: "A notable scholar of peace studies and imperialism is -----------------", options: ["Johan Galtung", "Peter Emerson", "Karl Marx", "George Padmore"], answer: "Johan Galtung" },
-      { q: "A good knowledge of imperialism is crucial to our study of politics in Africa because the African state (colonial and post – colonial) is a product of --------------------", options: ["African Predicament", "Imperialist enterprise", "Imperialist subjugation", "African penetration"], answer: "Imperialist enterprise" },
-      { q: "Political institutions of African states as well as their economics took their content and form from ---------------", options: ["Colonial situation", "Colonial venture", "Imperialist intervention", "Europe and North America"], answer: "Colonial situation" },
-      { q: "student of African politics can understand Africa’s external relations and linkages within -------------------------.", options: ["Course of historical change", "Pendulum of change", "Historical perspective", "Political perspectives"], answer: "Historical perspective" },
-      { q: "Under which of the mode of production did individuals developed ambition for material wealth in the pre-colonial economy of Africa", options: ["Communal mode of production", "Slavery mode of production", "Feudal mode of production", "Capitalist mode of production"], answer: "Slavery mode of production" },
-      { q: "A series of statement about the polity and economic activities of pre-colonial Africa is called", options: ["Political economy thesis", "European thesis", "Penetration thesis", "Pre- Colonial Africa thesis"], answer: "Penetration thesis" },
-      { q: "In the pre-colonial Africa, the pattern of exchange across border was dictated by", options: ["Force from monarch", "Real need of the people", "Capitalist idea", "Voluntary given"], answer: "Real need of the people" },
-      { q: "Imperialism reached its peak in the dying year of", options: ["19th century", "20th century", "18th century", "17th century"], answer: "19th century" },
-      { q: "John Hobson explained imperialism in relation to", options: ["American nation", "European nations", "Asian nations", "African nations"], answer: "European nations" },
-      { q: "The beginning of imperialism according to John Hobson can be traced to", options: ["1902", "1920", "1870", "1875"], answer: "1870" },
-      { q: "One of the measures suggested by John Hobson for the elimination of imperialism is", options: ["Reduction in spending", "Prosecution of tax defaulters", "Enforcement of taxation", "Sanction of government officials"], answer: "Enforcement of taxation" },
-      { q: "Who among the following social critics faulted John Hobson’s theory", options: ["Anarchist", "Empecurians", "Revolutionaries", "Marxist"], answer: "Marxist" },
-      { q: "Africa as a political region is defined in", options: ["AU Article", "UN Article", "ECOWAS Article", "OPEC Article"], answer: "AU Article" },
-      { q: "V.I. Lenin published his famous book on imperialism in", options: ["1915", "1918", "1916", "1919"], answer: "1916" },
-      { q: "The following are Marxist except", options: ["Rosa Luxemborg", "Karl Marx", "Francis Bacon", "Fredrick Engels"], answer: "Francis Bacon" },
-      { q: "V.I. Lenin theory of imperialism is purely", options: ["Economic and historical", "Economic and political", "Economic and social", "Cultural and economic"], answer: "Economic and historical" },
-      { q: "The Devil’s theory of imperialism came into existence in the", options: ["Cold War Era", "Gulf War Era", "First World War Era", "Second World War Era"], answer: "First World War Era" },
-      { q: "Military Industrial Complex can be traced to", options: ["U.S.A.", "Canada", "Britain", "Russia"], answer: "U.S.A." },
-      { q: "The Institute for Peace Research is located in", options: ["USA", "South Africa", "Norway", "France"], answer: "Norway" },
-      { q: "A classical example of a periphery nation is", options: ["Canada", "Rwanda", "Australia", "Spain"], answer: "Rwanda" },
-      { q: "The mimicking mentality of the ruling class in periphery nation in terms of language is located under", options: ["Economic imperialism", "Communication imperialism", "Cultural imperialism", "Political imperialism"], answer: "Cultural imperialism" },
-      { q: "Hans Morgenthau’s explanation of imperialism is on", options: ["Economic", "Cultural", "Power", "Military"], answer: "Power" },
-      { q: "Colonial policy of assimilation is credited to", options: ["Belgium", "Britain", "France", "Spain"], answer: "France" },
-      { q: "Which of the following items demonstrated superiority over western technology in the pre-colonial Africa", options: ["Textiles", "Hoes", "Herds and Skin", "Axe"], answer: "Textiles" },
-      { q: "Politics as struggle among actors pursuing conflicting desires on public issues was said by…………………", options: ["David Easton", "Vernon Van Dyke", "Emile Durkheim", "Charles Meriam"], answer: "Vernon Van Dyke" },
-      { q: "The processes by which people exercises and resist power is called", options: ["Constitution", "Politicization", "Government", "Politics"], answer: "Politics" },
-      { q: "The study of and reflection upon politics is called", options: ["Political Science", "Political Studies", "Politicalization", "Political Sociology"], answer: "Political Science" },
-      { q: "The last country that got independence in Africa is……………", options: ["Somalia", "Namibia", "South Sudan", "South Africa"], answer: "South Sudan" },
-      { q: "There are presently…………………..independent countries in Africa", options: ["50", "55", "35", "54"], answer: "54" },
-      { q: "South Sudan got independence in", options: ["2011", "2010", "1999", "2005"], answer: "2011" },
-      { q: "European domination in Angola lasted for ……………..years", options: ["200", "500", "100", "50"], answer: "500" },
-      { q: "Angola won war of independence against Portugal in", options: ["1975", "1976", "1970", "1973"], answer: "1975" },
-      { q: "Until 1960, Congo was administered by", options: ["Angola", "Turkey", "Belgium", "Portugal"], answer: "Belgium" },
-      { q: "A hybrid political system means", options: ["Tradition and modernity", "Coexistence of tradition and modernity", "Inter-relationship between tradition and modernity", "Matured political system"], answer: "Coexistence of tradition and modernity" },
-      { q: "Prepeh, was the king of the", options: ["Ashantis", "Opobos", "Jukuns", "Itsekiris"], answer: "Ashantis" },
-      { q: "Under Lugardism in Nigeria, the traditional ruler was converted to a/an", options: ["Governor", "President", "Administrator", "Local Merchant"], answer: "Administrator" },
-      { q: "Zimbabwe was formerly known as", options: ["Rhodesia", "Zimbabwe Island", "Tangayika", "Island Rhodesia"], answer: "Rhodesia" },
-      { q: "The mode of production that is classless is", options: ["Communal mode of production", "Feudal mode of production", "Slavocratic mode of production", "Socialist mode of production"], answer: "Communal mode of production" },
-      { q: "Which mode of production led to the emergence of military democracies in Africa", options: ["Feudal", "Communal", "Capitalist", "Slavocratic"], answer: "Slavocratic" },
-      { q: "Military democracies was built in Africa in the", options: ["5th century", "12th century", "9th century", "10th century"], answer: "10th century" },
-      { q: "The status of a slave in the slavocratic mode of production was", options: ["Perpetual", "Not perpetual", "Temporary", "For life"], answer: "Not perpetual" },
-      { q: "An example of a slave that got integrated into the family of his captor is", options: ["Prepeh of the Ashantis", "Ooni of Ife in early 19th century", "Jaja of Opobo", "Osamegwei of Benin"], answer: "Jaja of Opobo" },
-      { q: "Which mode of production produced artisans skilled in various arts by the 17th century", options: ["Feudal", "Socialist", "Capitalist", "Communal"], answer: "Feudal" },
-      { q: "The first Prime Minister of Zaire (now DRC) was", options: ["Patrice Lumumba", "Mobutu Seseko", "Sekou Toure", "Laurent Kabila"], answer: "Patrice Lumumba" },
-      { q: "Pastoral activities in the pre-colonial Africa is linked to", options: ["Agriculture", "Fishery", "Drumming", "Blacksmith"], answer: "Agriculture" },
-      { q: "Mimicking mentality of African leaders is associated with", options: ["Political Imperialism", "Cultural Imperialism", "Communication Imperialism", "Economic Imperialism"], answer: "Cultural Imperialism" },
-      { q: "Patrice Lumumba is from", options: ["Togo", "Kenya", "Zaire (DRC)", "Cote D’voire"], answer: "Zaire (DRC)" },
-      { q: "The battle of Adowa, the Ethiopians defeated the", options: ["Germans", "Italians", "French", "Portuguese"], answer: "Italians" },
-      { q: "Who among the following nationalist governed Guinea immediately after independent", options: ["Ahmed Sekou Toore", "Patrice Lumomba", "Julius Nyerere", "Modibo Keita"], answer: "Ahmed Sekou Toore" },
-      { q: "The book Economics of Imperialism was written by", options: ["V.I. Lenin", "Barratt Brown", "John Hobson", "John Schumpeter"], answer: "Barratt Brown" },
-      { q: "A very good example of a German politician/ imperialist", options: ["Lord Salisbury", "Lord Chamberlian", "Eisen-kanzler", "Gerald Ford"], answer: "Eisen-kanzler" },
-      { q: "Under the Devil’s theory of Imperialism, the financial barons and international bankers are located in", options: ["Green Street", "Texas Haven", "Wall Street", "New York Haven"], answer: "Wall Street" },
-      { q: "The Structural Theory of Imperialism by Johan Galtung is associated with the contemporary concept of", options: ["Structural Adjustment Policy", "Globalization", "Mercantalism", "Neo-Imperialism"], answer: "Globalization" }
-    ];
+    <!-- Modal Results -->
+    <div class="modal-overlay" id="results-modal">
+        <div class="modal-card">
+            <h2>Exam Completed!</h2>
+            <p style="color: var(--text-muted); margin-top: 0.5rem;">Here is a breakdown of your performance</p>
+            
+            <div class="score-circle">
+                <div class="score-number" id="score-percentage">0%</div>
+                <div class="score-total" id="score-fraction">0 / 0</div>
+            </div>
 
-    let timeInSeconds = 3600; // 60 minutes
-    let timerInterval;
+            <p id="feedback-text" style="margin-bottom: 1.5rem; font-weight: 500;"></p>
 
-    // Render questions to DOM
-    function renderQuestions() {
-      const container = document.getElementById("questionsContainer");
-      questionsData.forEach((item, index) => {
-        const card = document.createElement("div");
-        card.className = "card";
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button class="btn btn-primary" onclick="enableReviewMode()">Review Answers</button>
+                <button class="btn btn-secondary" onclick="restartExam()">Restart Test</button>
+            </div>
+        </div>
+    </div>
 
-        const title = document.createElement("div");
-        title.className = "question-title";
-        title.textContent = `${index + 1}. ${item.q}`;
-        card.appendChild(title);
+    <script>
+        const questions = [{"id": 1, "question": "Who among the following African leaders advocated Negritude", "options": ["Kenneth Kaunda", "Julius Nyerere", "Leopold Senghor", "Nnamdi Azikwe"], "answerIndex": 2, "answerText": "Leopold Senghor"}, {"id": 2, "question": "A good example of a Portuguese territory is", "options": ["Kenya", "Benin Republic", "Zimbabwe", "Togo"], "answerIndex": 2, "answerText": "Zimbabwe"}, {"id": 3, "question": "Colonialism was terminated in Southern African region through", "options": ["Wars of liberation", "Coup detat", "Constitutionalism", "Negotiation"], "answerIndex": 0, "answerText": "Wars of liberation"}, {"id": 4, "question": "The Wealth of Nations was written by", "options": ["Adam Smith", "Lord Lugard", "David Richardo", "David Moore"], "answerIndex": 0, "answerText": "Adam Smith"}, {"id": 5, "question": "Under slavocratic mode of production, politics became", "options": ["Exploitation Politics", "Slave Governance", "Slavocratic Politics", "Military democracies"], "answerIndex": 3, "answerText": "Military democracies"}, {"id": 6, "question": "Through the use of--------------, colonial authourities transformed political systems into modern one", "options": ["Constitution", "Force", "Conquest", "Bargaining"], "answerIndex": 0, "answerText": "Constitution"}, {"id": 7, "question": "Angola is a-------------- colony", "options": ["British", "French", "Pourtuguese", "Spanish"], "answerIndex": 2, "answerText": "Pourtuguese"}, {"id": 8, "question": "Another name for treaty is", "options": ["Obedience", "Punishment", "Agreement", "Sacrifice"], "answerIndex": 2, "answerText": "Agreement"}, {"id": 9, "question": "Imperialism and Social Classes is associated with", "options": ["Joseph Schumpeter", "Rosa Luxemborg", "Karl Marx", "V.I. Lenin"], "answerIndex": 0, "answerText": "Joseph Schumpeter"}, {"id": 10, "question": "The major aim of imperialism in Nigeria is", "options": ["Domination", "Military", "Economy", "Service"], "answerIndex": 0, "answerText": "Domination"}, {"id": 11, "question": "The study of history of a nation and its people is known as", "options": ["Political History", "Political Anthropology", "Political Studies", "Political Sociology"], "answerIndex": 1, "answerText": "Political Anthropology"}, {"id": 12, "question": "Congo was dominated before independence by", "options": ["Germany", "France", "Belgium", "Britain"], "answerIndex": 2, "answerText": "Belgium"}, {"id": 13, "question": "The reduction of political problems to technical problems is referred to as", "options": ["Artificial Politics", "Foreign Politics", "Depoliticization", "Depolarization"], "answerIndex": 2, "answerText": "Depoliticization"}, {"id": 14, "question": "Colonialism is usually achieved through", "options": ["Diplomatic action", "Political action", "Military action", "Economic action"], "answerIndex": 2, "answerText": "Military action"}, {"id": 15, "question": "Which of the following countries colonized Angola", "options": ["Britain", "Portugal", "France", "Belgium"], "answerIndex": 1, "answerText": "Portugal"}, {"id": 16, "question": "Lugardism is associated with indirect rule in", "options": ["Ghana", "Nigeria", "Togo", "Sierra Leone"], "answerIndex": 1, "answerText": "Nigeria"}, {"id": 17, "question": "Prepeh, king of Ashantis can be found in", "options": ["Ghana", "Namibia", "Liberia", "South Africa"], "answerIndex": 0, "answerText": "Ghana"}, {"id": 18, "question": "The first constitution in Nigeria is", "options": ["Richards Constitution", "Clifford Constitution", "Macpherson Constitution", "Lugard Constitution"], "answerIndex": 1, "answerText": "Clifford Constitution"}, {"id": 19, "question": "Assimiladoes as a colonial policy is practised by", "options": ["France", "Portugal", "Spain", "Britain"], "answerIndex": 1, "answerText": "Portugal"}, {"id": 20, "question": "Africans began meaningful existence as Homo Sapiens with their colonization by", "options": ["Latin America", "Caribean", "Arabs", "Europe"], "answerIndex": 3, "answerText": "Europe"}, {"id": 21, "question": "Under communal mode of production, authority was vested in the", "options": ["Religious Elders", "Youths", "Elders", "Chiefs"], "answerIndex": 2, "answerText": "Elders"}, {"id": 22, "question": "African polity and political society are\u2026\u2026\u2026\u2026\u2026\u2026.unit", "options": ["Heterogenous", "Diversified", "Unified", "Homogenous"], "answerIndex": 3, "answerText": "Homogenous"}, {"id": 23, "question": "The penetrated African society largely depended on the", "options": ["Internal Bourgeoisie", "External Bourgeoisie", "External prime-mover", "Internal prime-mover"], "answerIndex": 2, "answerText": "External prime-mover"}, {"id": 24, "question": "The prohibition of indigenous technology for the production of arms and ammunition by the colonialists is for\u2026\u2026\u2026\u2026\u2026\u2026.. reason", "options": ["Economic", "Technological", "Industrial", "Military"], "answerIndex": 3, "answerText": "Military"}, {"id": 25, "question": "Politics in Africa today has its origin in", "options": ["Traditional Politics", "Indigenous imperialism", "Western Imperialism", "African Culture"], "answerIndex": 2, "answerText": "Western Imperialism"}, {"id": 26, "question": "Which of the following African nationalists ruled Tanzania after independence ?", "options": ["Emperor Bokassa", "Sekou Toure", "Leopold Senghor", "Julius Nyerere"], "answerIndex": 3, "answerText": "Julius Nyerere"}, {"id": 27, "question": "Which of the following Africans in Diaspora articulated penetration thesis?", "options": ["Kwame Nkerumah", "Samuel Johnson", "Herbert Macaulay", "George Padmore"], "answerIndex": 3, "answerText": "George Padmore"}, {"id": 28, "question": "The following African scholars condemned imperialism except", "options": ["Fidel Castro", "Samir Amin", "Franz Fanon", "Walter Rodney"], "answerIndex": 0, "answerText": "Fidel Castro"}, {"id": 29, "question": "In its broadest sense imperialism means the political organization called", "options": ["Empire", "Metropolitan", "Injustice", "subordination"], "answerIndex": 0, "answerText": "Empire"}, {"id": 30, "question": "The book A Political Economy of Africa is written by", "options": ["Bade Onimode", "Walter Rodney", "Claude Ake", "Peter Ekeh"], "answerIndex": 2, "answerText": "Claude Ake"}, {"id": 31, "question": "A good example of a politician and stateman who is a British imperialist is", "options": ["Lord Salisbury", "Richeleu", "Lord Lugard", "Bernard Shaw"], "answerIndex": 0, "answerText": "Lord Salisbury"}, {"id": 32, "question": "Zululand is located in", "options": ["Namibia", "Angola", "Mozambique", "South Africa"], "answerIndex": 3, "answerText": "South Africa"}, {"id": 33, "question": "Who among the following sees the root of white racism not in the colour of the skin but in the Whiteman\u2019s claim of superior culture?", "options": ["Samir Amin", "Kwame Nkrumah", "Walter Rodney", "Marcus Garvey"], "answerIndex": 3, "answerText": "Marcus Garvey"}, {"id": 34, "question": "Sociological explanation of imperialism is credited to", "options": ["Karl Marx", "John Hobson", "Barrington More", "Joseph Schumpeter"], "answerIndex": 3, "answerText": "Joseph Schumpeter"}, {"id": 35, "question": "Johan Galtung is a \u2026\u2026\u2026\u2026 Social Scientist", "options": ["British", "Norwegian", "German", "French"], "answerIndex": 1, "answerText": "Norwegian"}, {"id": 36, "question": "A good example of processed good is", "options": ["Diamond", "Fertilizer", "Cocoa beans", "Banana"], "answerIndex": 1, "answerText": "Fertilizer"}, {"id": 37, "question": "There are \u2026\u2026\u2026\u2026\u2026 types of effects of unequal change between the centre and the periphery as identified by Johan Galtung", "options": ["Four", "Five", "Two", "Three"], "answerIndex": 2, "answerText": "Two"}, {"id": 38, "question": "Madagascar as an Island is located in", "options": ["Latin-America", "Africa", "Caribbean", "Europe"], "answerIndex": 1, "answerText": "Africa"}, {"id": 39, "question": "A good example of Francophone country in West Africa is", "options": ["Togo", "Gabon", "Siera-Leone", "Angola"], "answerIndex": 0, "answerText": "Togo"}, {"id": 40, "question": "Politics according to Vernon Van Dyke involves the struggle among actors pursuing conflicting desires on __________", "options": ["Policy issues", "Public issues", "People\u2019s issues", "Political issues"], "answerIndex": 1, "answerText": "Public issues"}, {"id": 41, "question": "By Africa in the context of POS 213, we mean the whole geographical area encompassing __________", "options": ["Continental African States", "Diaspora Africans", "African States before independent", "African States after independent"], "answerIndex": 0, "answerText": "Continental African States"}, {"id": 42, "question": "Europe dominated African politics for almost __________ years before independent", "options": ["500", "300", "400", "250"], "answerIndex": 0, "answerText": "500"}, {"id": 43, "question": "The Old Kingdom of Kongo was divided into ____________", "options": ["Angola and Togo", "Congo and Togo", "Congo and Gaben", "Congo and Angola"], "answerIndex": 3, "answerText": "Congo and Angola"}, {"id": 44, "question": "___________ describes the creation of African States as an artificial boundaries", "options": ["George Balandiers", "George Padmore", "Claude Ake", "Julius Nyerere"], "answerIndex": 0, "answerText": "George Balandiers"}, {"id": 45, "question": "Before independent, Angola was held as an overseas province of", "options": ["Belgium", "Portugal", "France", "Britain"], "answerIndex": 1, "answerText": "Portugal"}, {"id": 46, "question": "In the colonial era, the reduction of every political problem in to technical one is referred to as _____________", "options": ["Underpoliticization", "Propoliticization", "Overpoliticization", "Depoliticization"], "answerIndex": 3, "answerText": "Depoliticization"}, {"id": 47, "question": "The weakening of the economic position of traditional rulers in the colonial era resulted in limiting their ___________", "options": ["Power", "Position", "Status", "Prestige"], "answerIndex": 0, "answerText": "Power"}, {"id": 48, "question": "Where local chiefs were not in existence, ________________ were created to serve the interest of colonial masters", "options": ["Uneducated chiefs", "Warrant chiefs", "Master servant", "Lower chiefs"], "answerIndex": 1, "answerText": "Warrant chiefs"}, {"id": 49, "question": "One of the reasons why we study politics in Africa is to", "options": ["Acquaint ourselves with the peculiarities of how it is conducted", "Understand African politics", "Govern ourselves", "Acquaint ourselves with Europe"], "answerIndex": 0, "answerText": "Acquaint ourselves with the peculiarities of how it is conducted"}, {"id": 50, "question": "In order to proffer his own solution on how to govern Africa, the colonizer reduced all political problems to ___________", "options": ["Social problems", "Technical problems", "Economic problems", "Mechanical problems"], "answerIndex": 1, "answerText": "Technical problems"}, {"id": 51, "question": "By declaration of political structure, symbol or process as illegal by the colonizer is meant ____________", "options": ["Illegality", "Banning", "Prohibition", "Suspension"], "answerIndex": 2, "answerText": "Prohibition"}, {"id": 52, "question": "A document signed with British agents by African traditional rulers on their journey of colonial expedition is called _________", "options": ["Treaty", "Law", "Ideology", "Agreement"], "answerIndex": 0, "answerText": "Treaty"}, {"id": 53, "question": "Which of the following African kings resisted colonial rule", "options": ["King Okpuhor Tobah", "King Jaja of Opobo", "King David Eyor", "King Ashanike"], "answerIndex": 1, "answerText": "King Jaja of Opobo"}, {"id": 54, "question": "Through the use of __________, colonial authorities transformed indigenous political systems into adapted forms of western models", "options": ["Treaties", "Constitutions", "Force", "Laws"], "answerIndex": 1, "answerText": "Constitutions"}, {"id": 55, "question": "The Clifford Constitution began in", "options": ["1922", "1925", "1923", "1920"], "answerIndex": 0, "answerText": "1922"}, {"id": 56, "question": "Zimbabwe was formally known as ____________", "options": ["Rhodesia", "Harare", "Zimba Region", "Zimba Island"], "answerIndex": 0, "answerText": "Rhodesia"}, {"id": 57, "question": "A small minority of Africans integrated into mainstream Portuguese politics are called _________", "options": ["Black Portuguese", "Minority Portuguese", "Assimilados", "Evolue"], "answerIndex": 2, "answerText": "Assimilados"}, {"id": 58, "question": "The most colourful British Colonial administrator was", "options": ["Lord Robertson", "Lord Carrington", "Lord Lugard", "Lord Campbell"], "answerIndex": 2, "answerText": "Lord Lugard"}, {"id": 59, "question": "African nationalists had to fight Portuguese colonialism because", "options": ["It makes Africans to be poor", "It imposed too much tax", "It has no intention to hand over power to Africans", "It seized their farmlands"], "answerIndex": 2, "answerText": "It has no intention to hand over power to Africans"}, {"id": 60, "question": "The art of managing the resources of a people and of its government is referred to as ___________", "options": ["Economic management", "Socio-economic management", "Resource management", "Political economy"], "answerIndex": 3, "answerText": "Political economy"}, {"id": 61, "question": "The dependence on old colonial masters in many forms defined African political region today as a region of weak economies and ________", "options": ["Unstable continent", "Unstable politics", "Unstable government", "Unstable regimes"], "answerIndex": 1, "answerText": "Unstable politics"}, {"id": 62, "question": "In African political societies, pre-colonial political economy was, in productive activities, essentially", "options": ["Agrarian", "Pastoral", "Primitive", "Industrial"], "answerIndex": 1, "answerText": "Pastoral"}, {"id": 63, "question": "In terms of social production within the context of traditional African societies, the ___________ was the basic unit", "options": ["Father", "Family", "Clan", "Village"], "answerIndex": 1, "answerText": "Family"}, {"id": 64, "question": "The communal mode of production in pre-colonial African societies paid much attention on", "options": ["Food ownership", "Farm ownership", "Land ownership", "Animal ownership"], "answerIndex": 2, "answerText": "Land ownership"}, {"id": 65, "question": "When a mode of production is based on slave labour, it is known as ___________", "options": ["Labourstatic", "Slavocratic", "Slabocratic", "Slavobratic"], "answerIndex": 1, "answerText": "Slavocratic"}, {"id": 66, "question": "The two main actors under feudal mode of production are __________", "options": ["Slave and Master", "Fief and Serf", "Servant and Master", "Slave and Landowner"], "answerIndex": 1, "answerText": "Fief and Serf"}, {"id": 67, "question": "Pre-colonial political economy of Africa paid particular intention to _______", "options": ["Authority", "Tradition", "Culture", "Power"], "answerIndex": 2, "answerText": "Culture"}, {"id": 68, "question": "Under slave mode of production, _________ served as political advisers", "options": ["Religious leaders", "Elders", "Chiefs", "Warlords"], "answerIndex": 1, "answerText": "Elders"}, {"id": 69, "question": "In the pre-colonial political economy of African states laziness was visited with", "options": ["Social sanctions", "Communal fines", "Expulsion from village", "Hard labour"], "answerIndex": 0, "answerText": "Social sanctions"}, {"id": 70, "question": "The pattern of exchange among the pre-colonial African societies was dictated by ________", "options": ["real needs", "Cultural values", "Traditional values", "Opportunity"], "answerIndex": 0, "answerText": "real needs"}, {"id": 71, "question": "Penetration thesis holds that the colonial situation represented a", "options": ["Rearrangement of Africa", "Maldevelopment of Africa", "Division of Africa", "Transformation of Africa"], "answerIndex": 1, "answerText": "Maldevelopment of Africa"}, {"id": 72, "question": "One of the reasons why indigenous technology was killed is to eliminate possible", "options": ["Attraction", "Development", "Competition", "Underdevelopment"], "answerIndex": 2, "answerText": "Competition"}, {"id": 73, "question": "Who among the following scholars condemn imperialism for Africa\u2019s Predicament?", "options": ["Samir Amin", "George Padmore", "Chinua Achebe", "Leopold Senghor"], "answerIndex": 0, "answerText": "Samir Amin"}, {"id": 74, "question": "How Europe underdeveloped Africa was written by", "options": ["Franz Fanon", "Kwame Nkrumah", "Walter Rodney", "Nelson Mandela"], "answerIndex": 2, "answerText": "Walter Rodney"}, {"id": 75, "question": "The exportation of capital by the colonizer into the colony was in form of", "options": ["Investment", "Exploitation", "Administration", "Accumulation"], "answerIndex": 0, "answerText": "Investment"}, {"id": 76, "question": "Exchange of goods and services in the pre-colonial African societies across borders was", "options": ["Unequal", "Symmetric", "Asymetric", "Exploitative"], "answerIndex": 1, "answerText": "Symmetric"}, {"id": 77, "question": "Imperialism means the political organization which is called _________", "options": ["Colonialism", "Exploitation", "Authoritarianism", "Empire"], "answerIndex": 3, "answerText": "Empire"}, {"id": 78, "question": "Imperialism according to Hans Morgenthau is __________", "options": ["Influence to dominate", "Force to dominate", "power to dominate", "Authority to dominate"], "answerIndex": 2, "answerText": "power to dominate"}, {"id": 79, "question": "Under which form of imperialism did western capitalism penetration take place in Africa", "options": ["Cultural", "Political", "Economic", "Military"], "answerIndex": 1, "answerText": "Political"}, {"id": 80, "question": "The first economic theory of imperialism was articulated by", "options": ["Johan Galtung", "John Hobson", "V.I. Lenin", "Joseph Schumpeter"], "answerIndex": 1, "answerText": "John Hobson"}, {"id": 81, "question": "The two mechanism identified by Hobson for achieving imperialist objectives are", "options": ["Economic sanction and militarism", "Force and sanctions", "Merchantilism and militarism", "Arms manufacturing and politics"], "answerIndex": 2, "answerText": "Merchantilism and militarism"}, {"id": 82, "question": "Hobson sees imperialism as the consequence of _________ in the capitalist mode of production", "options": ["Poverty", "Maladjustment", "Exploitation", "Power"], "answerIndex": 1, "answerText": "Maladjustment"}, {"id": 83, "question": "Which of the following countries served as a reference point in Hobson\u2019s analysis?", "options": ["Canada", "USA", "Germany", "Britain"], "answerIndex": 3, "answerText": "Britain"}, {"id": 84, "question": "According to Hobson, the use of _________ will eliminate material inequalities among social classes", "options": ["Power", "Sanction", "Taxation", "Force"], "answerIndex": 2, "answerText": "Taxation"}, {"id": 85, "question": "The rise of imperialism according to Hobson can be prevented through relevant", "options": ["Poverty reduction", "Financial regulation", "Private policies", "Public policies"], "answerIndex": 3, "answerText": "Public policies"}, {"id": 86, "question": "Hobson\u2019s book Imperialism: A Study was published in", "options": ["1906", "1903", "1904", "1902"], "answerIndex": 3, "answerText": "1902"}, {"id": 87, "question": "For rejecting both class struggle and Marx\u2019s labour theory of value, Hobson\u2019s work was regarded as", "options": ["Class \u2013 labour theory of imperialism", "Liberal theory of imperialism", "Quasi capitalist theory of imperialism", "Conservative theory of imperialism"], "answerIndex": 1, "answerText": "Liberal theory of imperialism"}, {"id": 88, "question": "The concept of finance \u2013 capital was developed by", "options": ["Luxembourg", "Hilferding", "V.I. Lenin", "Marx"], "answerIndex": 1, "answerText": "Hilferding"}, {"id": 89, "question": "According to V.I. Lenin imperialism is the highest stage of", "options": ["Capitalism", "Underdevelopment", "Colonialism", "Exploitation"], "answerIndex": 0, "answerText": "Capitalism"}, {"id": 90, "question": "V.I. Lenin\u2019s book was written in", "options": ["Zurich", "Russia", "Britain", "Germany"], "answerIndex": 0, "answerText": "Zurich"}, {"id": 91, "question": "How many features did Lenin identified which define imperialism", "options": ["Eight", "Four", "Six", "Five"], "answerIndex": 3, "answerText": "Five"}, {"id": 92, "question": "The main body of Lenin\u2019s theory is purely economic, but there is a minor ________ aspect of the theory", "options": ["Historical", "Religious", "Cultural", "Social"], "answerIndex": 0, "answerText": "Historical"}, {"id": 93, "question": "According to Lenin, surplus capital would be exported to backward countries where they will attract", "options": ["High interest rate", "Direct investment", "More professionals", "Economic values"], "answerIndex": 0, "answerText": "High interest rate"}, {"id": 94, "question": "For Lenin, exportation of capital can be distinguished from", "options": ["Industrial exportation", "Commodity exportation", "Monopoly exportation", "financial exportation"], "answerIndex": 1, "answerText": "Commodity exportation"}, {"id": 95, "question": "In Lenin\u2019s work a merger of bank capital with industrial capital will lead to", "options": ["Financial oligarchy", "Financial capitalist", "Industrial bank", "International capitalist"], "answerIndex": 0, "answerText": "Financial oligarchy"}, {"id": 96, "question": "__________ according to Lenin is a pre-condition for imperialism", "options": ["Domination", "Commodity", "Cartelization", "Capitalism"], "answerIndex": 2, "answerText": "Cartelization"}, {"id": 97, "question": "Lenin\u2019s theory is an economic theory because", "options": ["His explanation is essentially economic", "The theory made mention of production", "The theory relates consumption to imperialism", "His theory mention capitalism in the theory"], "answerIndex": 0, "answerText": "His explanation is essentially economic"}, {"id": 98, "question": "According to Hobson the growth of the powers of production exceeds the growth in", "options": ["Distribution", "Development", "Investment", "Consumption"], "answerIndex": 3, "answerText": "Consumption"}, {"id": 99, "question": "Imperialism can said to be a product of the forces of finance capitalism, industrial revolution and-----------------", "options": ["Nationalism", "Colonialism", "Adventurism", "Expedition"], "answerIndex": 0, "answerText": "Nationalism"}, {"id": 100, "question": "Schumpeter\u2019s explanation of imperialism is _________ in nature", "options": ["Sociological", "Political", "Economical", "Cultural"], "answerIndex": 0, "answerText": "Sociological"}, {"id": 101, "question": "According to Schumpeter, ____________ is antithetical to imperialism", "options": ["Socialism", "Democracy", "Power", "Capitalism"], "answerIndex": 3, "answerText": "Capitalism"}, {"id": 102, "question": "The Devil\u2019s theory of imperialism was propounded by", "options": ["Nye Committee", "Kissinger Committee", "McCarthy Committee", "Nixon Committee"], "answerIndex": 0, "answerText": "Nye Committee"}, {"id": 103, "question": "According to the Devil\u2019s theory the class of people who benefited from war were the ammunition makers, financial barons and", "options": ["International bankers in Wall Street", "Merchants", "Manufacturers", "Financial oligarchies"], "answerIndex": 0, "answerText": "International bankers in Wall Street"}, {"id": 104, "question": "The Devil\u2019s theory attempts to explain imperialism as a conspiracy of the", "options": ["Entrepreneur class", "Capitalist class", "Economic class", "Financial class"], "answerIndex": 1, "answerText": "Capitalist class"}, {"id": 105, "question": "The Devil\u2019s theory was propounded to explain the effects of arms on the", "options": ["First World War", "The Gulf War", "The Auckland War", "Second World War"], "answerIndex": 0, "answerText": "First World War"}, {"id": 106, "question": "Military Industrial Complex is associated with", "options": ["United States of America", "Soviet Union", "Great Britain", "China"], "answerIndex": 0, "answerText": "United States of America"}, {"id": 107, "question": "According to the Devil\u2019s theory __________ is identified as the mechanism for achieving imperialist ends", "options": ["Force", "Prestige", "Power", "War"], "answerIndex": 3, "answerText": "War"}, {"id": 108, "question": "The structural theory of imperialism identified _________ nations", "options": ["Two", "Six", "Four", "Three"], "answerIndex": 0, "answerText": "Two"}, {"id": 109, "question": "A nation with primary goods and low capital stock is known as", "options": ["Secondary nation", "Centre nation", "Primary nation", "Periphery nation"], "answerIndex": 3, "answerText": "Periphery nation"}, {"id": 110, "question": "The effects of unequal exchange that manifest within the domestic environment is referred to as", "options": ["Horizontal interaction effect", "Intra-actor effect", "Inter-actor effect", "Vertical interaction effect"], "answerIndex": 1, "answerText": "Intra-actor effect"}, {"id": 111, "question": "The author of structural theory of imperialism is", "options": ["Joseph Schumpeter", "John Hobson", "Johan Galtung", "V.I. Lenin"], "answerIndex": 2, "answerText": "Johan Galtung"}, {"id": 112, "question": "How many mechanisms did the author of structural imperialism identified for bringing about imperialistic relations?", "options": ["Three", "Four", "Five", "Two"], "answerIndex": 3, "answerText": "Two"}, {"id": 113, "question": "________constitute the major source of inequality among nations", "options": ["Vertical interaction", "Feudal interaction", "Horizontal interaction", "Vertical and Feudal interaction"], "answerIndex": 0, "answerText": "Vertical interaction"}, {"id": 114, "question": "The author of structural theory of imperialism is a _________ social scientist", "options": ["Norwegian", "German", "French", "British"], "answerIndex": 0, "answerText": "Norwegian"}, {"id": 115, "question": "A politician and statesman in Britain of an imperialist posture is", "options": ["Eisen-Kansler", "Bismark", "Chamberlain", "Richelu"], "answerIndex": 2, "answerText": "Chamberlain"}, {"id": 116, "question": "Renascent Africa is a work credited to", "options": ["NnamdiAzikwe", "Julius Nyerere", "Kwame Nkrumah", "Leopold Senghor"], "answerIndex": 0, "answerText": "NnamdiAzikwe"}, {"id": 117, "question": "Who among the following argued that colonialism is the vehicle for the dispersal of civilization across the world", "options": ["McKinley", "Emerson", "Griffiths", "Moon"], "answerIndex": 2, "answerText": "Griffiths"}, {"id": 118, "question": "The term \u201cdual mandate\u201d was coined by", "options": ["Lord Salisbury", "Lord Lugard", "Lord Carrington", "Lord Spenier"], "answerIndex": 1, "answerText": "Lord Lugard"}, {"id": 119, "question": "The doctrine of power in relation to imperialism also means", "options": ["The doctrine of exploitation", "The doctrine of force", "The doctrine of civilization.", "The doctrine of domination"], "answerIndex": 0, "answerText": "The doctrine of exploitation"}, {"id": 120, "question": "How many sources of peculiarities are identified in African politics?", "options": ["5", "2", "4", "3"], "answerIndex": 1, "answerText": "2"}, {"id": 121, "question": "African traditional political system was transformed into", "options": ["Mixed system", "Industrial system", "Western system", "Indigenous system"], "answerIndex": 2, "answerText": "Western system"}, {"id": 122, "question": "The management of the resources of a people is known as", "options": ["Economic process", "Social development", "Political economy", "Economic relations"], "answerIndex": 2, "answerText": "Political economy"}, {"id": 123, "question": "Clans in the traditional political system built up", "options": ["Land economy", "Cultural economy", "Traditional economy", "Social economy"], "answerIndex": 2, "answerText": "Traditional economy"}, {"id": 124, "question": "Another name for warlords in the slavery period of production is", "options": ["Capturer", "Modular", "Predators", "Captives"], "answerIndex": 2, "answerText": "Predators"}, {"id": 125, "question": "The two basic concepts for the understanding of imperialism are", "options": ["Military and Economy", "Money and Power", "Power and Prestige", "Power and domination"], "answerIndex": 3, "answerText": "Power and domination"}, {"id": 126, "question": "Imperialism was a product of", "options": ["Communism", "Democracy", "Capitalism", "Socialism"], "answerIndex": 2, "answerText": "Capitalism"}, {"id": 127, "question": "Who among the following is a liberal theorist", "options": ["Joseph Sahumpeter", "John Hobson", "Johan Galtung", "Karl Marx"], "answerIndex": 1, "answerText": "John Hobson"}, {"id": 128, "question": "The central idea of Hobson theory is that imperialism is a social malaise brought about", "options": ["Reckless spending", "Corruption", "Poverty", "Maladjustment in production"], "answerIndex": 3, "answerText": "Maladjustment in production"}, {"id": 129, "question": "The basic tenets of Marxist theory of imperialism is", "options": ["Power relations", "Poverty", "Class struggle", "Economic analysis"], "answerIndex": 2, "answerText": "Class struggle"}, {"id": 130, "question": "Both Hobson and Lenin\u2019s theory of imperialism are", "options": ["Cultural in nature", "Political in nature", "Economic in nature", "Social in nature"], "answerIndex": 2, "answerText": "Economic in nature"}, {"id": 131, "question": "Johan Galtung tried to explain imperialism between", "options": ["Three nations", "Four nations", "Two nations", "Six nations"], "answerIndex": 2, "answerText": "Two nations"}, {"id": 132, "question": "The centre nations in Galtung analysis are the", "options": ["Christian nations", "Industrialized nations", "Agrarian nations", "Imperial nations"], "answerIndex": 1, "answerText": "Industrialized nations"}, {"id": 133, "question": "The effect on language is attributed to", "options": ["Political imperialism", "Cultural imperialism", "Economic imperialism", "Military imperialism"], "answerIndex": 1, "answerText": "Cultural imperialism"}, {"id": 134, "question": "The advantages that are accrue to the industrial nations is known as", "options": ["Spin off effect", "Unequal relations", "Spill over effect", "Unequal exchange"], "answerIndex": 0, "answerText": "Spin off effect"}, {"id": 135, "question": "The feudal relationship as propounded by Galtung involve how many principles?", "options": ["Two", "Six", "Three", "Four"], "answerIndex": 3, "answerText": "Four"}, {"id": 136, "question": "One of the consequences of European penetration into indigenous African political system is", "options": ["Poverty", "Underdevelopment", "Exploitation", "Illiteracy"], "answerIndex": 1, "answerText": "Underdevelopment"}, {"id": 137, "question": "According to Hobson, imperialism can be eliminated through", "options": ["Constitutionalism", "Prayer", "Enforcement of taxation", "Sanctions"], "answerIndex": 2, "answerText": "Enforcement of taxation"}, {"id": 138, "question": "Labour theory of value is credited to the", "options": ["Marxist", "Anarchist", "Revolutionaries", "Liberals"], "answerIndex": 0, "answerText": "Marxist"}, {"id": 139, "question": "The Devil\u2019s theory is associated with", "options": ["The USA", "China", "Germany", "Britain"], "answerIndex": 0, "answerText": "The USA"}, {"id": 140, "question": "The doctrines of imperialism are ----------------- in nature", "options": ["Validating", "Subjective", "Objective", "Rational"], "answerIndex": 1, "answerText": "Subjective"}, {"id": 141, "question": "The views of the doctrines of imperialism were sold to the world as explanations for imperialism in ------------------", "options": ["Africa, Asia and Latin America", "America, Asia and Africa", "South Africa, Asia and Asia Minor", "Europe, North America and Sudan"], "answerIndex": 0, "answerText": "Africa, Asia and Latin America"}, {"id": 142, "question": "European expansionism and imperialist adventure in Africa, Asia and Latin America was between ----------", "options": ["1870s to first half of 20th century", "19th century and 20th century", "1960s and 1980s", "1850s and the second half of 19th century"], "answerIndex": 3, "answerText": "1850s and the second half of 19th century"}, {"id": 143, "question": "How many groups of people were involved in canvassing for the doctrines of imperialism", "options": ["5", "3", "4", "7"], "answerIndex": 2, "answerText": "4"}, {"id": 144, "question": "The doctrines of imperialism implies", "options": ["The regaining of lost territory to colonial adventure", "The means of acquiring territories in Africa", "Theoretical opinions canvassed by the advocates of imperialism to avoid moral condemnation at home and abroad.", "The scientific postulation of imperialism"], "answerIndex": 2, "answerText": "Theoretical opinions canvassed by the advocates of imperialism to avoid moral condemnation at home and abroad."}, {"id": 145, "question": "--------------- explains imperialism as the logical outcrop of power disparity between two interacting nations or peoples", "options": ["Doctrine of power", "Doctrine of marginalization", "Doctrine of irredentism", "Doctrine of exploitation"], "answerIndex": 0, "answerText": "Doctrine of power"}, {"id": 146, "question": "Who argued that \u201cimperialism is a multifarious response to a common opportunity that consists simply in disparity of power", "options": ["Abraham Kaplan", "Luthy Collinder", "Athol Fugard", "Daniel Landes"], "answerIndex": 3, "answerText": "Daniel Landes"}, {"id": 147, "question": "Renascent Africa was written by a ------------------------", "options": ["Togolese", "Senegalese", "Ghanian", "Nigerian"], "answerIndex": 3, "answerText": "Nigerian"}, {"id": 148, "question": "The resistance led by African rulers or traditional war-lords is called ------", "options": ["Necessary resistance", "Antagonistic moves", "Insubordinate resistance", "Primary resistance"], "answerIndex": 3, "answerText": "Primary resistance"}, {"id": 149, "question": "Imperialism is also explained in terms of -------------------", "options": ["Modernisation", "Objective mission", "Civilising mission", "Dependency mission"], "answerIndex": 2, "answerText": "Civilising mission"}, {"id": 150, "question": "The term dual mandate was coined by ---------------", "options": ["Lord Lugard", "Rupert Emerson", "W. Mckinley\u2019s", "P.T. Moon"], "answerIndex": 0, "answerText": "Lord Lugard"}, {"id": 151, "question": "The league of nations mandate system reflected the ------------ in the doctrine of civilisation", "options": ["Obsession", "Racism", "Nazism", "Euro centrism"], "answerIndex": 1, "answerText": "Racism"}, {"id": 152, "question": "Paris peace treaty was concluded on the basis of president Wilson\u2019s ---------- point programme", "options": ["16", "14", "17", "20"], "answerIndex": 1, "answerText": "14"}, {"id": 153, "question": "The territories in the German and Ottoman Turkish empires were categorised into classes", "options": ["A, B, C", "F, K, J", "D,C, E", "1, 2, 3"], "answerIndex": 0, "answerText": "A, B, C"}, {"id": 154, "question": "Marcus Garvey sees the root of white racism not in the colour of the skin but in the whiteman\u2019s claim of -----------", "options": ["Superiority", "Knowledge", "Power", "Superior culture"], "answerIndex": 3, "answerText": "Superior culture"}, {"id": 155, "question": "The Economics of Imperialism was written by ------", "options": ["Barratts Brown", "Hamza Alavi", "Marcus Garvey", "Claude Ake"], "answerIndex": 0, "answerText": "Barratts Brown"}, {"id": 156, "question": "The argument by Hans Morgenthau that imperialism is about power; power to dominate was in which book?", "options": ["Economics of Imperialism", "Politics among Nations", "Gains of Imperialism", "Renascent Africa"], "answerIndex": 1, "answerText": "Politics among Nations"}, {"id": 157, "question": "The most popular form of imperialism in Africa is ---------------", "options": ["Colonialism", "Economics", "Culture", "Political"], "answerIndex": 0, "answerText": "Colonialism"}, {"id": 158, "question": "Penetration thesis traces the root of African political, economic and social situation to -----------", "options": ["Asian Capitalist Penetration", "African Sino Asian Alliances", "Western Capitalist Penetration", "American Capitalist Penetration"], "answerIndex": 2, "answerText": "Western Capitalist Penetration"}, {"id": 159, "question": "The first groups of people to articulate the penetration thesis were the ----------------", "options": ["Westernised early African Nationalists", "Europeans", "Nationalists", "Pan \u2013 Africanists"], "answerIndex": 0, "answerText": "Westernised early African Nationalists"}, {"id": 160, "question": "Which of the following is not a notable African scholar", "options": ["Ted Gur", "Franz Fanon", "Samir Amin", "Walter Rodney"], "answerIndex": 0, "answerText": "Ted Gur"}, {"id": 161, "question": "Which of the following is not among the early African nationalists", "options": ["Jomo Kenyatta", "Modibo Keita", "Sekou Toure", "W.E.B Dubios"], "answerIndex": 3, "answerText": "W.E.B Dubios"}, {"id": 162, "question": "One of the following is not an example of Africans in Diaspora", "options": ["George Padmore", "W.E.B Dubios", "Walter Rodney", "C.R. James"], "answerIndex": 2, "answerText": "Walter Rodney"}, {"id": 163, "question": "Who opined that through illiberal colonialism, the poor should be ruthlessly abolished by raising their standard of life while the rich was preserved.", "options": ["Lord Salisbury", "Bernard Shaw", "Bismark", "P.T. Moon"], "answerIndex": 1, "answerText": "Bernard Shaw"}, {"id": 164, "question": "The film, ------------------ documents the amount of blood of resisting Zulus that Britain had to let before she could take over Zululand.", "options": ["The Zulu", "Zululand", "The Master Game", "The Great Fight"], "answerIndex": 0, "answerText": "The Zulu"}, {"id": 165, "question": "Who wrote Imperialism and World Politics in 1927?", "options": ["P.T. Moon", "Lord Lugard", "Walter Rodney", "Bernard Shaw"], "answerIndex": 0, "answerText": "P.T. Moon"}, {"id": 166, "question": "A notable scholar of peace studies and imperialism is -----------------", "options": ["Karl Marx", "Peter Emerson", "George Padmore", "Johan Galtung"], "answerIndex": 3, "answerText": "Johan Galtung"}, {"id": 167, "question": "A good knowledge of imperialism is crucial to our study of politics in Africa because the African state (colonial and post \u2013 colonial) is a product of --------------------", "options": ["African Predicament", "African penetration", "Imperialist subjugation", "Imperialist enterprise"], "answerIndex": 3, "answerText": "Imperialist enterprise"}, {"id": 168, "question": "Political institutions of African states as well as their economics took their content and form from ---------------", "options": ["Imperialist intervention", "Europe and North America", "Colonial situation", "Colonial venture"], "answerIndex": 2, "answerText": "Colonial situation"}, {"id": 169, "question": "student of African politics can understand Africa\u2019s external relations and linkages within -------------------------.", "options": ["Political perspectives", "Pendulum of change", "Historical perspective", "Course of historical change"], "answerIndex": 2, "answerText": "Historical perspective"}, {"id": 170, "question": "Under which of the mode of production did individuals developed ambition for material wealth in  the pre-colonial economy of Africa", "options": ["Slavery mode of production", "Communal mode of production", "Capitalist mode of production", "Feudal mode of production"], "answerIndex": 0, "answerText": "Slavery mode of production"}, {"id": 171, "question": "A series of statement about the polity and economic activities of pre-colonial Africa is called", "options": ["Political economy thesis", "European thesis", "Pre- Colonial Africa thesis", "Penetration thesis"], "answerIndex": 3, "answerText": "Penetration thesis"}, {"id": 172, "question": "In the pre-colonial Africa, the pattern of exchange across border was dictated by", "options": ["Capitalist idea", "Force from monarch", "Real need of the people", "Voluntary given"], "answerIndex": 3, "answerText": "Voluntary given"}, {"id": 173, "question": "Imperialism reached its peak in the dying year of", "options": ["20th century", "17th century", "19th century", "18th century"], "answerIndex": 2, "answerText": "19th century"}, {"id": 174, "question": "John Hobson explained imperialism in relation to", "options": ["American nation", "African nations", "European nations", "Asian nations"], "answerIndex": 2, "answerText": "European nations"}, {"id": 175, "question": "The beginning of imperialism according to John Hobson can be traced to", "options": ["1870", "1875", "1920", "1902"], "answerIndex": 0, "answerText": "1870"}, {"id": 176, "question": "One of the measures suggested by John Hobson for the elimination of imperialism is", "options": ["Prosecution of tax defaulters", "Enforcement of taxation", "Reduction in spending", "Sanction of government officials"], "answerIndex": 1, "answerText": "Enforcement of taxation"}, {"id": 177, "question": "Who among the following social critics faulted John Hobson\u2019s theory", "options": ["Empecurians", "Revolutionaries", "Marxist", "Anarchist"], "answerIndex": 2, "answerText": "Marxist"}, {"id": 178, "question": "Africa as a political region is defined in", "options": ["AU Article", "ECOWAS Article", "OPEC Article", "UN Article"], "answerIndex": 0, "answerText": "AU Article"}, {"id": 179, "question": "V.I. Lenin published his famous book on imperialism in", "options": ["1919", "1918", "1916", "1915"], "answerIndex": 2, "answerText": "1916"}, {"id": 180, "question": "The following are Marxist except", "options": ["Fredrick Engels", "Francis Bacon", "Rosa Luxemborg", "Karl Marx"], "answerIndex": 1, "answerText": "Francis Bacon"}, {"id": 181, "question": "V.I. Lenin theory of imperialism is purely", "options": ["Cultural and economic", "Economic and social", "Economic and historical", "Economic and political"], "answerIndex": 2, "answerText": "Economic and historical"}, {"id": 182, "question": "The Devil\u2019s theory of imperialism came into existence in the", "options": ["First World War Era", "Gulf War Era", "Second World War Era", "Cold War Era"], "answerIndex": 0, "answerText": "First World War Era"}, {"id": 183, "question": "Military Industrial Complex can be traced to", "options": ["Britain", "U.S.A.", "Canada", "Russia"], "answerIndex": 1, "answerText": "U.S.A."}, {"id": 184, "question": "The Institute for Peace Research is located in", "options": ["South Africa", "Norway", "France", "USA"], "answerIndex": 1, "answerText": "Norway"}, {"id": 185, "question": "A classical example of a periphery nation is", "options": ["Rwanda", "Spain", "Canada", "Australia"], "answerIndex": 0, "answerText": "Rwanda"}, {"id": 186, "question": "The mimicking mentality of the ruling class in periphery nation in terms of language is located under", "options": ["Communication imperialism", "Cultural imperialism", "Political imperialism", "Economic imperialism"], "answerIndex": 1, "answerText": "Cultural imperialism"}, {"id": 187, "question": "Hans Morgenthau\u2019s explanation of imperialism is on", "options": ["Economic", "Cultural", "Military", "Power"], "answerIndex": 3, "answerText": "Power"}, {"id": 188, "question": "Colonial policy of assimilation is credited to", "options": ["Spain", "Belgium", "Britain", "France"], "answerIndex": 3, "answerText": "France"}, {"id": 189, "question": "Which of the following items demonstrated superiority over western technology in the pre-colonial Africa", "options": ["Herds and Skin", "Textiles", "Axe", "Hoes"], "answerIndex": 1, "answerText": "Textiles"}, {"id": 190, "question": "Politics as struggle among actors pursuing conflicting desires on public issues was said by\u2026\u2026\u2026\u2026\u2026\u2026\u2026", "options": ["David Easton", "Vernon Van Dyke", "Emile Durkheim", "Charles Meriam"], "answerIndex": 1, "answerText": "Vernon Van Dyke"}, {"id": 191, "question": "The processes by which people exercises and resist power is called", "options": ["Government", "Politicization", "Politics", "Constitution"], "answerIndex": 2, "answerText": "Politics"}, {"id": 192, "question": "The study of and reflection upon politics is called", "options": ["Political Science", "Politicalization", "Political Sociology", "Political Studies"], "answerIndex": 0, "answerText": "Political Science"}, {"id": 193, "question": "The last country that got independence in Africa is\u2026\u2026\u2026\u2026\u2026", "options": ["South Africa", "Somalia", "Namibia", "South Sudan"], "answerIndex": 3, "answerText": "South Sudan"}, {"id": 194, "question": "There are presently\u2026\u2026\u2026\u2026\u2026\u2026\u2026..independent countries in Africa", "options": ["35", "55", "50", "54"], "answerIndex": 3, "answerText": "54"}, {"id": 195, "question": "South Sudan got independence in", "options": ["2010", "2005", "1999", "2011"], "answerIndex": 3, "answerText": "2011"}, {"id": 196, "question": "European domination in Angola lasted for \u2026\u2026\u2026\u2026\u2026..years", "options": ["500", "100", "200", "50"], "answerIndex": 0, "answerText": "500"}, {"id": 197, "question": "Angola won war of independence against Portugal in", "options": ["1970", "1976", "1973", "1975"], "answerIndex": 3, "answerText": "1975"}, {"id": 198, "question": "Until 1960, Congo was administered by", "options": ["Turkey", "Belgium", "Portugal", "Angola"], "answerIndex": 1, "answerText": "Belgium"}, {"id": 199, "question": "A hybrid political system means", "options": ["Matured political system", "Coexistence of tradition and modernity", "Inter-relationship between tradition and modernity", "Tradition and modernity"], "answerIndex": 1, "answerText": "Coexistence of tradition and modernity"}, {"id": 200, "question": "Prepeh, was the king of the", "options": ["Ashantis", "Opobos", "Itsekiris", "Jukuns"], "answerIndex": 0, "answerText": "Ashantis"}, {"id": 201, "question": "Under Lugardism in Nigeria, the traditional ruler was converted to a/an", "options": ["President", "Administrator", "Local Merchant", "Governor"], "answerIndex": 1, "answerText": "Administrator"}, {"id": 202, "question": "Zimbabwe was formerly known as", "options": ["Island Rhodesia", "Zimbabwe Island", "Tangayika", "Rhodesia"], "answerIndex": 3, "answerText": "Rhodesia"}, {"id": 203, "question": "The mode of production that is classless is", "options": ["Communal mode of production", "Feudal mode of production", "Slavocratic mode of production", "Socialist mode of production"], "answerIndex": 0, "answerText": "Communal mode of production"}, {"id": 204, "question": "Which mode of production led to the emergence of military democracies in Africa", "options": ["Capitalist", "Communal", "Slavocratic", "Feudal"], "answerIndex": 2, "answerText": "Slavocratic"}, {"id": 205, "question": "Military democracies was built in Africa in the", "options": ["12th century", "9th century", "5th century", "10th century"], "answerIndex": 3, "answerText": "10th century"}, {"id": 206, "question": "The status of a slave in the slavocratic mode of production was", "options": ["Temporary", "Perpetual", "Not perpetual", "For life"], "answerIndex": 2, "answerText": "Not perpetual"}, {"id": 207, "question": "An example of a slave that got integrated into the family of his captor is", "options": ["Jaja of Opobo", "Ooni of Ife in early 19th century", "Osamegwei of Benin", "Prepeh of the Ashantis"], "answerIndex": 0, "answerText": "Jaja of Opobo"}, {"id": 208, "question": "Which mode of production produced artisans skilled in various arts by the 17th century", "options": ["Communal", "Feudal", "Capitalist", "Socialist"], "answerIndex": 1, "answerText": "Feudal"}, {"id": 209, "question": "The first Prime Minister of Zaire (now DRC) was", "options": ["Mobutu Seseko", "Patrice Lumumba", "Laurent Kabila", "Sekou Toure"], "answerIndex": 1, "answerText": "Patrice Lumumba"}, {"id": 210, "question": "Pastoral activities in the pre-colonial Africa is linked to", "options": ["Drumming", "Fishery", "Blacksmith", "Agriculture"], "answerIndex": 3, "answerText": "Agriculture"}, {"id": 211, "question": "Mimicking mentality of African leaders is associated with", "options": ["Communication Imperialism", "Cultural Imperialism", "Political Imperialism", "Economic Imperialism"], "answerIndex": 1, "answerText": "Cultural Imperialism"}, {"id": 212, "question": "Patrice Lumumba is from", "options": ["Kenya", "Togo", "Cote D\u2019voire", "Zaire (DRC)"], "answerIndex": 3, "answerText": "Zaire (DRC)"}, {"id": 213, "question": "The battle of Adowa, the Ethiopians defeated the", "options": ["Italians", "Germans", "French", "Portuguese"], "answerIndex": 0, "answerText": "Italians"}, {"id": 214, "question": "Who among the following nationalist governed Guinea immediately after independent", "options": ["Julius Nyerere", "Ahmed Sekou Toore", "Modibo Keita", "Patrice Lumomba"], "answerIndex": 1, "answerText": "Ahmed Sekou Toore"}, {"id": 215, "question": "The book Economics of Imperialism was written by", "options": ["V.I. Lenin", "John Schumpeter", "Barratt Brown", "John Hobson"], "answerIndex": 2, "answerText": "Barratt Brown"}, {"id": 216, "question": "A very good example of a German politician/ imperialist", "options": ["Gerald Ford", "Lord Chamberlian", "Eisen-kanzler", "Lord Salisbury"], "answerIndex": 2, "answerText": "Eisen-kanzler"}, {"id": 217, "question": "Under the Devil\u2019s theory of Imperialism, the financial barons and international bankers are located in", "options": ["Wall Street", "New York Haven", "Texas Haven"], "answerIndex": 0, "answerText": "Wall Street"}, {"id": 218, "question": "The Structural Theory of Imperialism by Johan Galtung is associated with the contemporary concept of", "options": ["Globalization", "Neo-Imperialism", "Structural Adjustment Policy", "Mercantalism"], "answerIndex": 0, "answerText": "Globalization"}];
 
-        const optionsGroup = document.createElement("div");
-        optionsGroup.className = "options-group";
+        let currentIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let examSubmitted = false;
+        let isReviewMode = false;
+        let timeLeft = 60 * 60; // 60 minutes in seconds
+        let timerInterval = null;
 
-        item.options.forEach(opt => {
-          const label = document.createElement("label");
-          label.className = "option-label";
-
-          const radio = document.createElement("input");
-          radio.type = "radio";
-          radio.name = `q_${index}`;
-          radio.value = opt;
-
-          label.appendChild(radio);
-          label.appendChild(document.createTextNode(opt));
-          optionsGroup.appendChild(label);
-        });
-
-        card.appendChild(optionsGroup);
-        container.appendChild(card);
-      });
-    }
-
-    // 60-Minute Countdown Timer
-    function startTimer() {
-      const timerElement = document.getElementById("timer");
-      timerInterval = setInterval(() => {
-        timeInSeconds--;
-
-        let minutes = Math.floor(timeInSeconds / 60);
-        let seconds = timeInSeconds % 60;
-
-        let formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        timerElement.textContent = formattedTime;
-
-        if (timeInSeconds <= 300) {
-          timerElement.classList.add("warning");
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                } else {
+                    timeLeft--;
+                    updateTimerDisplay();
+                }
+            }, 1000);
         }
 
-        if (timeInSeconds <= 0) {
-          clearInterval(timerInterval);
-          alert("Time has expired! Submitting your test automatically.");
-          submitExam();
+        function updateTimerDisplay() {
+            const mins = Math.floor(timeLeft / 60);
+            const secs = timeLeft % 60;
+            document.getElementById('timer-text').innerText = 
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
-      }, 1000);
-    }
 
-    // Submit and Evaluate Exam
-    function submitExam() {
-      clearInterval(timerInterval);
-
-      let score = 0;
-      questionsData.forEach((item, index) => {
-        const selected = document.querySelector(`input[name="q_${index}"]:checked`);
-        if (selected && selected.value === item.answer) {
-          score++;
+        function initQuiz() {
+            renderGridNav();
+            loadQuestion(0);
+            startTimer();
         }
-      });
 
-      document.getElementById("cbtForm").style.display = "none";
-      const resultsCard = document.getElementById("resultsCard");
-      resultsCard.style.display = "block";
+        function renderGridNav() {
+            const grid = document.getElementById('grid-nav');
+            grid.innerHTML = '';
+            questions.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'nav-btn';
+                btn.innerText = idx + 1;
+                btn.id = `nav-${idx}`;
+                btn.onclick = () => loadQuestion(idx);
+                grid.appendChild(btn);
+            });
+        }
 
-      document.getElementById("scoreDisplay").textContent = `${score} / ${questionsData.length}`;
-      let percentage = ((score / questionsData.length) * 100).toFixed(2);
-      document.getElementById("percentageDisplay").textContent = `Percentage Score: ${percentage}%`;
+        function loadQuestion(index) {
+            currentIndex = index;
+            const q = questions[index];
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+            // Update question header
+            document.getElementById('q-number').innerText = `Question ${index + 1} of ${questions.length}`;
+            document.getElementById('q-status').innerText = userAnswers[index] !== null ? 'Answered' : 'Unanswered';
+            document.getElementById('q-text').innerText = q.question;
 
-    window.onload = () => {
-      renderQuestions();
-      startTimer();
-    };
-  </script>
+            // Render options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const letters = ['A', 'B', 'C', 'D', 'E'];
+
+            q.options.forEach((opt, optIdx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+
+                if (userAnswers[index] === optIdx) {
+                    btn.classList.add('selected');
+                }
+
+                if (isReviewMode) {
+                    if (optIdx === q.answerIndex) {
+                        btn.classList.add('correct');
+                    } else if (userAnswers[index] === optIdx) {
+                        btn.classList.add('wrong');
+                    }
+                }
+
+                btn.innerHTML = `
+                    <span class="option-prefix">${letters[optIdx] || optIdx + 1}</span>
+                    <span>${opt}</span>
+                `;
+
+                if (!isReviewMode) {
+                    btn.onclick = () => selectOption(optIdx);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            // Controls update
+            document.getElementById('prev-btn').disabled = index === 0;
+            if (index === questions.length - 1) {
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('submit-btn').style.display = 'inline-block';
+            } else {
+                document.getElementById('next-btn').style.display = 'inline-block';
+                document.getElementById('submit-btn').style.display = 'inline-block';
+            }
+
+            // Update palette highlights
+            document.querySelectorAll('.nav-btn').forEach((b, idx) => {
+                b.classList.remove('active');
+                if (idx === index) b.classList.add('active');
+                if (userAnswers[idx] !== null) b.classList.add('answered');
+                else b.classList.remove('answered');
+            });
+        }
+
+        function selectOption(optIndex) {
+            if (isReviewMode) return;
+            userAnswers[currentIndex] = optIndex;
+            loadQuestion(currentIndex);
+        }
+
+        function clearAnswer() {
+            if (isReviewMode) return;
+            userAnswers[currentIndex] = null;
+            loadQuestion(currentIndex);
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                loadQuestion(currentIndex + 1);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                loadQuestion(currentIndex - 1);
+            }
+        }
+
+        function confirmSubmit() {
+            const unanswered = userAnswers.filter(a => a === null).length;
+            let msg = "Are you sure you want to submit your exam?";
+            if (unanswered > 0) {
+                msg = `You still have ${unanswered} unanswered question(s). Are you sure you want to submit?`;
+            }
+            if (confirm(msg)) {
+                submitExam();
+            }
+        }
+
+        function submitExam() {
+            clearInterval(timerInterval);
+            examSubmitted = true;
+
+            let score = 0;
+            questions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.answerIndex) {
+                    score++;
+                }
+            });
+
+            const percentage = Math.round((score / questions.length) * 100);
+            document.getElementById('score-percentage').innerText = `${percentage}%`;
+            document.getElementById('score-fraction').innerText = `${score} / ${questions.length} Correct`;
+
+            let feedback = "Great effort! Keep revising to improve your score.";
+            if (percentage >= 70) feedback = "Excellent work! Excellent understanding of the material.";
+            else if (percentage >= 50) feedback = "Good job! A little more study will sharpen your score.";
+
+            document.getElementById('feedback-text').innerText = feedback;
+            document.getElementById('results-modal').style.display = 'flex';
+        }
+
+        function enableReviewMode() {
+            isReviewMode = true;
+            document.getElementById('results-modal').style.display = 'none';
+            document.getElementById('quiz-card').classList.add('review-mode');
+            loadQuestion(0);
+        }
+
+        function restartExam() {
+            userAnswers = new Array(questions.length).fill(null);
+            examSubmitted = false;
+            isReviewMode = false;
+            timeLeft = 60 * 60;
+            document.getElementById('results-modal').style.display = 'none';
+            document.getElementById('quiz-card').classList.remove('review-mode');
+            initQuiz();
+        }
+
+        window.onload = initQuiz;
+    </script>
 </body>
 </html>
